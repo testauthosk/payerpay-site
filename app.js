@@ -191,6 +191,60 @@
     });
   });
 
+  // Reusable country list (search + expand/collapse), scoped to its own hooks.
+  const initCountryList = (opts) => {
+    const search = document.querySelector(opts.search);
+    const list = document.querySelector(opts.list);
+    const empty = document.querySelector(opts.empty);
+    const more = document.querySelector(opts.more);
+    const rows = [...document.querySelectorAll(opts.rows)];
+    if (!search || !list || !empty || !more) return;
+
+    const filter = () => {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      rows.forEach((row) => {
+        const matches = !query || (row.dataset[opts.dataKey] || '').includes(query);
+        const allowed = Boolean(query) || list.classList.contains('is-expanded') || row.classList.contains('is-featured');
+        const show = matches && allowed;
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+      empty.classList.toggle('is-visible', visible === 0);
+      more.hidden = Boolean(query);
+    };
+
+    search.addEventListener('input', filter);
+    document.querySelectorAll(opts.quick).forEach((button) => {
+      button.addEventListener('click', () => {
+        search.value = button.dataset[opts.quickKey];
+        filter();
+        search.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      });
+    });
+    more.addEventListener('click', () => {
+      const expanded = !list.classList.contains('is-expanded');
+      list.classList.toggle('is-expanded', expanded);
+      more.setAttribute('aria-expanded', String(expanded));
+      more.innerHTML = `${expanded ? opts.lessLabel : opts.moreLabel} <span aria-hidden="true">↓</span>`;
+      filter();
+    });
+    filter();
+  };
+
+  initCountryList({
+    search: '#eu-search',
+    list: '[data-eu-list]',
+    empty: '[data-eu-empty]',
+    more: '[data-eu-more]',
+    rows: '[data-eu-keywords]',
+    dataKey: 'euKeywords',
+    quick: '[data-eu-quick]',
+    quickKey: 'euQuick',
+    moreLabel: 'View all countries',
+    lessLabel: 'Show fewer countries',
+  });
+
   document.querySelector('[data-year]').textContent = new Date().getFullYear();
   filterDestinations();
 })();
