@@ -3,10 +3,6 @@
   const menuToggle = document.querySelector('[data-menu-toggle]');
   const menu = document.querySelector('[data-menu]');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMac = navigator.platform.toLowerCase().includes('mac');
-
-  const searchShortcut = document.querySelector('[data-search-shortcut]');
-  if (searchShortcut) searchShortcut.textContent = isMac ? '⌘ K' : 'Ctrl K';
 
   const setHeaderState = () => header?.classList.toggle('is-scrolled', window.scrollY > 16);
   setHeaderState();
@@ -167,14 +163,6 @@
     showMore.setAttribute('aria-expanded', String(expanded));
     showMore.innerHTML = `${expanded ? 'Show fewer destinations' : 'View all destinations'} <span aria-hidden="true">↓</span>`;
     filterDestinations();
-  });
-
-  window.addEventListener('keydown', (event) => {
-    const modifier = isMac ? event.metaKey : event.ctrlKey;
-    if (!modifier || event.key.toLowerCase() !== 'k' || !searchInput) return;
-    event.preventDefault();
-    searchInput.focus();
-    searchInput.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
   });
 
   const faqItems = [...document.querySelectorAll('.faq-item')];
