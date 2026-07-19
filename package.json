@@ -1,0 +1,9 @@
+{
+  "name": "payerpay-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PayerPay marketing website (static, served by a tiny Node server)",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
