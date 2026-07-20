@@ -1858,3 +1858,18 @@ textarea.auth-input { height: auto; min-height: 138px; padding: 14px 16px; line-
 .contact-chip.is-static { color: var(--muted); font-weight: 700; cursor: default; }
 .contact-chip.is-static:hover { transform: none; border-color: var(--line); box-shadow: none; }
 .contact-chip .chip-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(34, 160, 107, .16); }
+
+/* ===== CUSTOM SELECT (smooth expanding dropdown) ===== */
+.c-select { position: relative; }
+.c-select-trigger { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; cursor: pointer; font: inherit; }
+.c-select-value { overflow: hidden; color: var(--navy); font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
+.c-select-value.is-placeholder { color: #9aa2b1; }
+.c-select-chevron { width: 18px; height: 18px; flex: 0 0 auto; color: var(--muted); transition: transform .25s ease; }
+.c-select.is-open .c-select-chevron { transform: rotate(180deg); }
+.c-select.is-open .c-select-trigger { border-color: var(--coral); box-shadow: 0 0 0 4px rgba(255, 101, 77, .13); }
+.c-select-panel { position: absolute; top: calc(100% + 8px); right: 0; left: 0; z-index: 40; margin: 0; padding: 6px; list-style: none; overflow-y: auto; max-height: 0; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: 0 20px 46px rgba(15, 27, 51, .15); opacity: 0; transform: translateY(-8px); transform-origin: top center; pointer-events: none; transition: opacity .22s ease, transform .26s cubic-bezier(.4, 0, .2, 1), max-height .3s cubic-bezier(.4, 0, .2, 1); }
+.c-select.is-open .c-select-panel { max-height: 320px; opacity: 1; transform: translateY(0); pointer-events: auto; }
+.c-select-option { padding: 11px 13px; border-radius: 9px; color: var(--navy); font-size: 14.5px; cursor: pointer; transition: background .15s ease, color .15s ease; }
+.c-select-option:hover, .c-select-option.is-active { background: var(--coral-soft); }
+.c-select-option.is-selected { color: var(--coral); font-weight: 800; }
+.c-select.is-invalid .c-select-trigger { border-color: #e5484d; box-shadow: 0 0 0 4px rgba(229, 72, 77, .12); }
