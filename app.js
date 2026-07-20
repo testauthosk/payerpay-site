@@ -27,6 +27,7 @@
   });
 
   menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  document.querySelector('[data-nav-scrim]')?.addEventListener('click', closeMenu);
   window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeMenu();
   });

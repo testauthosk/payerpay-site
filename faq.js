@@ -24,6 +24,8 @@
     document.body.classList.toggle('menu-open', open);
   });
   menu && menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  const navScrim = document.querySelector('[data-nav-scrim]');
+  navScrim && navScrim.addEventListener('click', closeMenu);
 
   // Level 1 — category accordion (one open at a time: opening one closes the rest)
   const allCats = [...document.querySelectorAll('.faq-cat')];
