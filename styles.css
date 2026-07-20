@@ -1775,3 +1775,31 @@ select.auth-input { appearance: none; -webkit-appearance: none; padding-right: 4
   .auth-card h1 { font-size: 28px; }
   .auth-row { flex-wrap: wrap; gap: 10px; }
 }
+
+/* ===== LEGAL PAGES (terms / privacy / aml-kyc) ===== */
+.legal-hero { position: relative; overflow: hidden; padding: 0 0 28px; background: linear-gradient(135deg, #fff 0%, #fff 48%, #fff6f2 100%); }
+.legal-hero .container { position: relative; z-index: 2; }
+.legal-hero h1 { margin: 12px 0 8px; color: var(--navy); font-size: clamp(34px, 5vw, 52px); font-weight: 900; letter-spacing: -.04em; line-height: 1.04; }
+.legal-updated { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 700; }
+.legal-updated::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+
+.legal-page { padding: 8px 0 78px; background: var(--paper); }
+.legal-content { max-width: 760px; }
+.legal-content > p:first-child { margin-top: 0; }
+.legal-content p { margin: 0 0 16px; color: #46506a; font-size: 15.5px; line-height: 1.72; }
+.legal-content h2 { margin: 40px 0 14px; padding-top: 26px; border-top: 1px solid var(--line); color: var(--navy); font-size: 23px; font-weight: 900; letter-spacing: -.02em; line-height: 1.2; }
+.legal-content h2:first-of-type { margin-top: 30px; }
+.legal-content h3 { margin: 26px 0 10px; color: var(--navy); font-size: 16.5px; font-weight: 850; }
+.legal-content ul, .legal-content ol { margin: 0 0 16px; padding-left: 22px; color: #46506a; font-size: 15.5px; line-height: 1.7; }
+.legal-content li { margin-bottom: 8px; }
+.legal-content strong, .legal-content b { color: var(--ink); font-weight: 800; }
+.legal-content a { color: var(--coral); font-weight: 700; text-decoration: none; }
+.legal-content a:hover { text-decoration: underline; }
+.legal-content hr { margin: 34px 0; border: 0; border-top: 1px solid var(--line); }
+
+@media (max-width: 720px) {
+  .legal-hero { padding: 0 0 22px; }
+  .legal-page { padding: 6px 0 56px; }
+  .legal-content p, .legal-content ul, .legal-content ol { font-size: 15px; }
+  .legal-content h2 { margin-top: 32px; font-size: 21px; }
+}
