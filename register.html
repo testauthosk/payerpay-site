@@ -13,7 +13,7 @@
   <meta name="apple-mobile-web-app-title" content="PayerPay">
   <meta name="robots" content="noindex">
   <title>Create account · PayerPay</title>
-  <link rel="stylesheet" href="styles.css?v=1784583258">
+  <link rel="stylesheet" href="styles.css?v=1784583480">
 </head>
 <body class="auth-body">
   <main class="auth-wrap">
@@ -44,25 +44,29 @@
           </div>
 
           <div class="auth-field">
-            <label for="country">Country of residence</label>
-            <div class="auth-input-wrap">
-              <select class="auth-input" id="country" name="country" required>
-                <option value="" disabled selected>Select your country</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Germany</option>
-                <option>France</option>
-                <option>Spain</option>
-                <option>Italy</option>
-                <option>Netherlands</option>
-                <option>Ireland</option>
-                <option>Poland</option>
-                <option>Portugal</option>
-                <option>Canada</option>
-                <option>United Arab Emirates</option>
-                <option>India</option>
-                <option>Other</option>
-              </select>
+            <label id="country-label">Country of residence</label>
+            <div class="c-select" data-cselect>
+              <button type="button" class="auth-input c-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="country-label" data-cselect-trigger>
+                <span class="c-select-value is-placeholder" data-cselect-value>Select your country</span>
+                <svg class="c-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <ul class="c-select-panel" role="listbox" aria-label="Country of residence" data-cselect-panel>
+                <li class="c-select-option" role="option" data-value="United States">United States</li>
+                <li class="c-select-option" role="option" data-value="United Kingdom">United Kingdom</li>
+                <li class="c-select-option" role="option" data-value="Germany">Germany</li>
+                <li class="c-select-option" role="option" data-value="France">France</li>
+                <li class="c-select-option" role="option" data-value="Spain">Spain</li>
+                <li class="c-select-option" role="option" data-value="Italy">Italy</li>
+                <li class="c-select-option" role="option" data-value="Netherlands">Netherlands</li>
+                <li class="c-select-option" role="option" data-value="Ireland">Ireland</li>
+                <li class="c-select-option" role="option" data-value="Poland">Poland</li>
+                <li class="c-select-option" role="option" data-value="Portugal">Portugal</li>
+                <li class="c-select-option" role="option" data-value="Canada">Canada</li>
+                <li class="c-select-option" role="option" data-value="United Arab Emirates">United Arab Emirates</li>
+                <li class="c-select-option" role="option" data-value="India">India</li>
+                <li class="c-select-option" role="option" data-value="Other">Other</li>
+              </ul>
+              <input type="hidden" name="country" data-cselect-input>
             </div>
           </div>
 
@@ -112,6 +116,7 @@
     </aside>
   </main>
 
+  <script src="cselect.js?v=1784583480" defer></script>
   <script>
     (() => {
       document.querySelectorAll('[data-pw-toggle]').forEach((btn) => {
@@ -125,14 +130,21 @@
         });
       });
       const form = document.getElementById('register-form');
+      const countrySelect = form && form.querySelector('[data-cselect]');
       form && form.addEventListener('submit', (e) => {
         e.preventDefault();
         if (!form.reportValidity()) return;
+        if (countrySelect && !form.country.value) {
+          countrySelect.classList.add('is-invalid');
+          countrySelect.querySelector('[data-cselect-trigger]').focus();
+          return;
+        }
         const btn = form.querySelector('.auth-submit');
         btn.textContent = 'Creating account…';
         btn.disabled = true;
         setTimeout(() => { btn.textContent = 'Create account'; btn.disabled = false; }, 1400);
       });
+      countrySelect && countrySelect.addEventListener('change', () => countrySelect.classList.remove('is-invalid'));
     })();
   </script>
 </body>
