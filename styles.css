@@ -1208,7 +1208,8 @@ p { text-wrap: pretty; }
 .security-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .security-cards article { min-height: 230px; padding: 25px; border: 1px solid rgba(255, 255, 255, .1); border-radius: 20px; background: rgba(255, 255, 255, .055); transition: background .3s ease, transform .3s var(--ease), border-color .3s ease; }
 .security-cards article:hover { border-color: rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .09); transform: translateY(-4px); }
-.security-icon { display: grid; width: 48px; height: 48px; margin-bottom: 24px; place-items: center; border-radius: 15px; background: rgba(255, 101, 77, .15); color: #ff9d8d; font-size: 20px; font-weight: 900; }
+.security-icon { display: grid; width: 48px; height: 48px; margin-bottom: 24px; place-items: center; border-radius: 15px; background: rgba(255, 101, 77, .15); color: #ff9d8d; }
+.security-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.9; }
 .security-cards h3 { margin-bottom: 10px; color: #fff; font-size: 17px; }
 .security-cards p { margin-bottom: 0; color: #9facbf; font-size: 12px; }
 
