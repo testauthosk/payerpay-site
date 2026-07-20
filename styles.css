@@ -120,10 +120,8 @@ p { text-wrap: pretty; }
 }
 
 .site-header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  right: 0;
-  left: 0;
   z-index: 100;
   border-bottom: 1px solid transparent;
   transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
@@ -272,7 +270,7 @@ p { text-wrap: pretty; }
   position: relative;
   min-height: 790px;
   overflow: hidden;
-  padding: 148px 0 82px;
+  padding: 44px 0 82px;
   background: linear-gradient(135deg, #fff 0%, #fff 50%, #fff8f5 100%);
 }
 
@@ -1424,7 +1422,7 @@ p { text-wrap: pretty; }
   .nav-wrap { min-height: 72px; }
   .main-nav { gap: 20px; }
   .main-nav > a:not(.button) { font-size: 13px; }
-  .hero { min-height: auto; padding: 125px 0 70px; }
+  .hero { min-height: auto; padding: 40px 0 70px; }
   .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   .hero-copy { max-width: 720px; }
   .hero h1 { font-size: clamp(54px, 8vw, 72px); }
@@ -1498,7 +1496,7 @@ p { text-wrap: pretty; }
   .main-nav > a:not(.button) { display: block; padding: 12px 4px; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 18px; }
   .main-nav > a:not(.button)::after { display: none; }
   .main-nav .nav-cta { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 14px; min-height: 50px; }
-  .hero { padding: 112px 0 58px; }
+  .hero { padding: 24px 0 58px; }
   .hero-grid { gap: 43px; }
   .hero-copy { padding-top: 0; }
   .hero h1 { margin-bottom: 21px; font-size: clamp(42px, 12vw, 58px); letter-spacing: -.058em; }
@@ -1629,7 +1627,7 @@ p { text-wrap: pretty; }
 /* Solid, in-flow sticky header on the FAQ page — bounded burger bar, no fixed-offset padding needed */
 .is-faq .site-header { position: sticky; top: 0; background: #fff; border-color: rgba(232, 228, 224, .9); box-shadow: 0 6px 22px rgba(15, 27, 51, .05); }
 
-.faq-hero { position: relative; overflow: hidden; padding: 30px 0 38px; background: linear-gradient(135deg, #fff 0%, #fff 48%, #fff6f2 100%); }
+.faq-hero { position: relative; overflow: hidden; padding: 14px 0 38px; background: linear-gradient(135deg, #fff 0%, #fff 48%, #fff6f2 100%); }
 .faq-hero-orb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
 .faq-hero-orb-one { top: -150px; right: -90px; width: 430px; height: 430px; background: radial-gradient(circle, rgba(255, 101, 77, .17), transparent 65%); }
 .faq-hero-orb-two { bottom: -210px; left: -140px; width: 470px; height: 470px; background: radial-gradient(circle, rgba(43, 83, 164, .1), transparent 65%); }
@@ -1666,7 +1664,7 @@ p { text-wrap: pretty; }
 .faq-cat .faq-list { counter-reset: faq-item; display: grid; gap: 8px; max-width: none; padding: 2px 16px 20px; }
 
 @media (max-width: 720px) {
-  .faq-hero { padding: 24px 0 28px; }
+  .faq-hero { padding: 10px 0 28px; }
   .faq-hero-lead { font-size: 16px; }
   .faq-cat-head { min-height: 64px; padding: 17px 17px; gap: 12px; }
   .faq-cat-title { font-size: 15.5px; }
