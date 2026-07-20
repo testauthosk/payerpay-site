@@ -8,6 +8,21 @@
     root.classList.toggle('is-open', open);
     const trg = root.querySelector('[data-cselect-trigger]');
     if (trg) trg.setAttribute('aria-expanded', String(open));
+    // Keep the panel clipped during the max-height animation (avoids a scrollbar flashing
+    // while the content briefly exceeds the growing max-height); enable scroll once open.
+    const panel = root.querySelector('[data-cselect-panel]');
+    if (panel) {
+      panel.style.overflowY = 'hidden';
+      if (open) {
+        const onEnd = (e) => {
+          if (e.target === panel && e.propertyName === 'max-height') {
+            panel.style.overflowY = 'auto';
+            panel.removeEventListener('transitionend', onEnd);
+          }
+        };
+        panel.addEventListener('transitionend', onEnd);
+      }
+    }
     if (!open) root.querySelectorAll('.c-select-option.is-active').forEach((o) => o.classList.remove('is-active'));
   };
   const closeAll = (except) => all().forEach((r) => { if (r !== except) setOpen(r, false); });
