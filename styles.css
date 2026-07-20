@@ -1665,8 +1665,8 @@ p { text-wrap: pretty; }
 .faq-cat .faq-list { counter-reset: faq-item; display: grid; gap: 8px; max-width: none; padding: 2px 16px 20px; }
 
 @media (max-width: 720px) {
-  .faq-hero { padding: 0 0 28px; }
-  .faq-back { margin-top: 10px; }
+  .faq-hero { padding: 0 0 24px; }
+  .faq-back { margin-top: 6px; margin-bottom: 12px; }
   .faq-hero-lead { font-size: 16px; }
   .faq-cat-head { min-height: 64px; padding: 17px 17px; gap: 12px; }
   .faq-cat-title { font-size: 15.5px; }
