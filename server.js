@@ -11,11 +11,13 @@ http.createServer((req, res) => {
     if (e) { // фолбэк на index.html
       fs.readFile(path.join(root, 'index.html'), (e2, d2) => {
         if (e2) { res.writeHead(404); res.end('Not found'); }
-        else { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }); res.end(d2); }
+        else { res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store, must-revalidate' }); res.end(d2); }
       });
       return;
     }
-    res.writeHead(200, { 'Content-Type': types[path.extname(f).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'public, max-age=300' });
+    const ext = path.extname(f).toLowerCase();
+    const noStore = ext === '.html' || ext === '.css' || ext === '.js' || ext === '.json';
+    res.writeHead(200, { 'Content-Type': types[ext] || 'application/octet-stream', 'Cache-Control': noStore ? 'no-store, must-revalidate' : 'public, max-age=300' });
     res.end(data);
   });
 }).listen(port, () => console.log('PayerPay site serving on :' + port));
