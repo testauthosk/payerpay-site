@@ -25,13 +25,18 @@
   });
   menu && menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
 
-  // Level 1 — category accordion (multiple may stay open, independent toggle)
-  document.querySelectorAll('.faq-cat-head').forEach((head) => {
-    head.addEventListener('click', () => {
-      const cat = head.closest('.faq-cat');
-      const open = !cat.classList.contains('is-open');
-      cat.classList.toggle('is-open', open);
-      head.setAttribute('aria-expanded', String(open));
+  // Level 1 — category accordion (one open at a time: opening one closes the rest)
+  const allCats = [...document.querySelectorAll('.faq-cat')];
+  allCats.forEach((cat) => {
+    const head = cat.querySelector('.faq-cat-head');
+    head && head.addEventListener('click', () => {
+      const willOpen = !cat.classList.contains('is-open');
+      allCats.forEach((other) => {
+        const open = other === cat && willOpen;
+        other.classList.toggle('is-open', open);
+        const h = other.querySelector('.faq-cat-head');
+        h && h.setAttribute('aria-expanded', String(open));
+      });
     });
   });
 

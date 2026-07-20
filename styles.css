@@ -1466,24 +1466,24 @@ p { text-wrap: pretty; }
   .menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .main-nav {
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    left: 0;
     z-index: 101;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0;
-    padding: 100px 24px 30px;
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 24px;
     background: #fff;
+    box-shadow: 0 24px 44px rgba(15, 27, 51, .13);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-12px);
-    transition: opacity .25s ease, transform .25s var(--ease);
+    transition: max-height .42s cubic-bezier(.4, 0, .2, 1), padding .42s cubic-bezier(.4, 0, .2, 1), opacity .28s ease;
   }
-  .main-nav.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }
-  .main-nav > a:not(.button) { padding: 17px 4px; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 21px; }
+  .main-nav.is-open { max-height: 460px; padding: 84px 24px 26px; opacity: 1; pointer-events: auto; }
+  .main-nav > a:not(.button) { display: block; padding: 15px 4px; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 20px; }
   .main-nav > a:not(.button)::after { display: none; }
-  .main-nav .nav-cta { width: 100%; margin-top: 24px; min-height: 56px; }
+  .main-nav .nav-cta { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 20px; min-height: 54px; }
   .hero { padding: 112px 0 58px; }
   .hero-grid { gap: 43px; }
   .hero-copy { padding-top: 0; }
