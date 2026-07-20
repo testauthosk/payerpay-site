@@ -9,7 +9,7 @@ const BUILD_LABEL = p2(bd.getUTCHours()) + ':' + p2(bd.getUTCMinutes()) + ':' + 
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 
 // Проставляет ?v=BUILD в ссылки на локальные css/js, чтобы старый кэш не подменял свежий файл.
-const versionAssets = (html) => html.replace(/(\b(?:href|src)=")(styles\.css|app\.js|faq\.js)(?:\?v=[^"]*)?(")/g, `$1$2?v=${BUILD}$3`);
+const versionAssets = (html) => html.replace(/(\b(?:href|src)=")(styles\.css|app\.js|faq\.js|cselect\.js)(?:\?v=[^"]*)?(")/g, `$1$2?v=${BUILD}$3`);
 // Видимый штамп сборки (только при ?debug) — чтобы сразу видеть, свежая ли страница.
 const BADGE = `<div style="position:fixed;bottom:8px;right:10px;z-index:99999;font:700 11px system-ui,-apple-system,sans-serif;color:#fff;background:#C0552E;padding:4px 9px;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.25);pointer-events:none">build ${BUILD_LABEL}</div>`;
 
