@@ -6,7 +6,7 @@
   <meta name="description" content="Receive USD or EUR account details and send money home through familiar local payment methods.">
   <meta name="theme-color" content="#0f1b33">
   <title>PayerPay — Get paid abroad. Send money home locally.</title>
-  <link rel="stylesheet" href="styles.css?v=1784563868">
+  <link rel="stylesheet" href="styles.css?v=1784571970">
 </head>
 <body>
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
@@ -92,11 +92,11 @@
           </ul>
         </div>
 
-        <div class="hero-visual" aria-label="Money received in the United States and sent to family in India">
-          <div class="visual-glow" aria-hidden="true"></div>
-          <div class="photo-card">
-            <img src="assets/hero-family.png" alt="A PayerPay customer sending money to his family" width="550" height="700">
-          </div>
+        <div class="hero-visual" aria-label="Receive money abroad and send it to family">
+          <picture class="photo-card">
+            <source media="(max-width: 520px)" srcset="assets/hero-art-mobile.png" width="941" height="1672">
+            <img src="assets/hero-art-desktop.png" alt="A PayerPay customer receiving money abroad and sending it to family" width="1448" height="1086" fetchpriority="high" decoding="async">
+          </picture>
 
           <div class="floating-card balance-card">
             <span>Salary received</span>
@@ -109,10 +109,9 @@
             <span><small>USD account</small><strong>Payment received</strong></span>
           </div>
 
-          <div class="destination-marker" aria-hidden="true"><svg class="flag-icon"><use href="#flag-in"></use></svg><i></i></div>
-          <div class="route-pill route-pill-one"><svg class="flag-icon" aria-hidden="true"><use href="#flag-in"></use></svg><span><small>India</small><strong>INR · UPI</strong></span></div>
-          <div class="route-pill route-pill-two"><svg class="flag-icon" aria-hidden="true"><use href="#flag-br"></use></svg><span><small>Brazil</small><strong>BRL · PIX</strong></span></div>
-          <div class="route-pill route-pill-three"><svg class="flag-icon" aria-hidden="true"><use href="#flag-ph"></use></svg><span><small>Philippines</small><strong>PHP · GCash</strong></span></div>
+          <a class="route-pill route-pill-one" href="#destinations" data-hero-search="India" aria-label="View India INR and UPI route"><svg class="flag-icon" aria-hidden="true"><use href="#flag-in"></use></svg><span><small>India</small><strong>INR · UPI</strong></span></a>
+          <a class="route-pill route-pill-two" href="#destinations" data-hero-search="Brazil" aria-label="View Brazil BRL and PIX route"><svg class="flag-icon" aria-hidden="true"><use href="#flag-br"></use></svg><span><small>Brazil</small><strong>BRL · PIX</strong></span></a>
+          <a class="route-pill route-pill-three" href="#destinations" data-hero-search="Philippines" aria-label="View Philippines PHP and GCash route"><svg class="flag-icon" aria-hidden="true"><use href="#flag-ph"></use></svg><span><small>Philippines</small><strong>PHP · GCash</strong></span></a>
         </div>
       </div>
     </section>
@@ -724,6 +723,6 @@
     <div class="container footer-bottom"><span>© <span data-year></span> PayerPay. All rights reserved.</span><span>Move money with clarity.</span></div>
   </footer>
 
-  <script src="app.js?v=1784563868" defer></script>
+  <script src="app.js?v=1784571970" defer></script>
 </body>
 </html>

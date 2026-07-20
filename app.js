@@ -1,239 +1,231 @@
 (() => {
-  const header = document.querySelector('[data-header]');
-  const menuToggle = document.querySelector('[data-menu-toggle]');
-  const menu = document.querySelector('[data-menu]');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  'use strict';
 
-  const setHeaderState = () => header?.classList.toggle('is-scrolled', window.scrollY > 16);
-  setHeaderState();
-  window.addEventListener('scroll', setHeaderState, { passive: true });
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-  const closeMenu = () => {
-    if (!menuToggle || !menu) return;
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuToggle.setAttribute('aria-label', 'Open menu');
-    menu.classList.remove('is-open');
-    header?.classList.remove('menu-visible');
-    document.body.classList.remove('menu-open');
+  const header = $('[data-header]');
+  const menu = $('[data-menu]');
+  const menuToggle = $('[data-menu-toggle]');
+  const navScrim = $('[data-nav-scrim]');
+
+  const setMenuOpen = (open) => {
+    if (!menu || !menuToggle) return;
+    menu.classList.toggle('is-open', open);
+    header?.classList.toggle('menu-visible', open);
+    document.body.classList.toggle('menu-open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    navScrim?.setAttribute('aria-hidden', String(!open));
   };
 
   menuToggle?.addEventListener('click', () => {
-    const open = menuToggle.getAttribute('aria-expanded') !== 'true';
-    menuToggle.setAttribute('aria-expanded', String(open));
-    menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    menu?.classList.toggle('is-open', open);
-    header?.classList.toggle('menu-visible', open);
-    document.body.classList.toggle('menu-open', open);
+    setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true');
   });
-
-  menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-  document.querySelector('[data-nav-scrim]')?.addEventListener('click', closeMenu);
-  window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
+  navScrim?.addEventListener('click', () => setMenuOpen(false));
+  menu?.addEventListener('click', (event) => {
+    if (event.target.closest('a')) setMenuOpen(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setMenuOpen(false);
   });
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 760) closeMenu();
+    if (window.innerWidth > 760) setMenuOpen(false);
   });
 
-  const revealElements = document.querySelectorAll('[data-reveal]');
-  if (reduceMotion || !('IntersectionObserver' in window)) {
-    revealElements.forEach((element) => element.classList.add('is-visible'));
-  } else {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
+  const syncHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  syncHeader();
+  window.addEventListener('scroll', syncHeader, { passive: true });
+
+  $$('[data-year]').forEach((node) => { node.textContent = String(new Date().getFullYear()); });
+
+  const revealItems = $$('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, currentObserver) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+        currentObserver.unobserve(entry.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -45px' });
-    revealElements.forEach((element) => revealObserver.observe(element));
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    revealItems.forEach((item) => observer.observe(item));
+  } else {
+    revealItems.forEach((item) => item.classList.add('is-visible'));
   }
 
   const regionData = {
     usd: {
+      flag: '#flag-us',
       kicker: 'United States · USD',
       title: 'Get personal USD account details',
       text: 'Receive eligible salary and personal transfers using account details issued in your name.',
       list: ['Receive through ACH or Fedwire', 'Details issued in your name', 'Send onward in local currency'],
       previewName: 'Personal USD details',
       balance: '$8,420.00',
-      detailLabel: 'Routing number',
-      flag: '#flag-us'
+      detailLabel: 'Routing number'
     },
     eur: {
+      flag: '#flag-eu',
       kicker: 'European Union · EUR',
       title: 'Get personal EUR account details',
-      text: 'Receive eligible salary and personal transfers using EUR account details issued in your name.',
-      list: ['Receive through SEPA', 'Details issued in your name', 'Send onward in local currency'],
+      text: 'Receive eligible euro transfers using personal details issued after verification.',
+      list: ['Receive through SEPA or SEPA Instant', 'Personal IBAN and BIC details', 'Send onward in local currency'],
       previewName: 'Personal EUR details',
-      balance: '€7,860.00',
-      detailLabel: 'IBAN',
-      flag: '#flag-eu'
+      balance: '€6,780.00',
+      detailLabel: 'IBAN'
     }
   };
 
-  const tabs = [...document.querySelectorAll('[data-region]')];
-  const panel = document.querySelector('#region-panel');
-  const regionSwitch = document.querySelector('[data-region-switch]');
-  let activeRegion = 'usd';
-  let switchTimer;
-  const renderRegion = (key) => {
-    const data = regionData[key];
-    if (!data || !panel) return;
-    const direction = key === 'eur' ? 'forward' : 'backward';
-    panel.classList.remove('is-changing');
-    panel.dataset.direction = direction;
-    void panel.offsetWidth;
-    panel.classList.add('is-changing');
-    regionSwitch.dataset.active = key;
+  const regionSwitch = $('[data-region-switch]');
+  const regionPanel = $('#region-panel');
+  const regionTabs = $$('[data-region]', regionSwitch || document);
+
+  const selectRegion = (region) => {
+    const data = regionData[region];
+    if (!data || !regionSwitch || !regionPanel) return;
+    const previous = regionSwitch.dataset.active || 'usd';
+    regionSwitch.dataset.active = region;
     regionSwitch.classList.remove('is-switching');
     void regionSwitch.offsetWidth;
     regionSwitch.classList.add('is-switching');
-    window.clearTimeout(switchTimer);
-    switchTimer = window.setTimeout(() => regionSwitch.classList.remove('is-switching'), 700);
-    panel.querySelector('[data-panel-kicker]').textContent = data.kicker;
-    panel.querySelector('[data-panel-flag] use').setAttribute('href', data.flag);
-    panel.querySelector('[data-panel-title]').textContent = data.title;
-    panel.querySelector('[data-panel-text]').textContent = data.text;
-    panel.querySelector('[data-panel-list]').innerHTML = data.list.map((item) => `<li><span aria-hidden="true">✓</span> ${item}</li>`).join('');
-    panel.querySelector('[data-preview-name]').textContent = data.previewName;
-    panel.querySelector('[data-preview-balance]').textContent = data.balance;
-    panel.querySelector('[data-detail-label]').textContent = data.detailLabel;
-    panel.setAttribute('aria-labelledby', `tab-${key}`);
-    activeRegion = key;
+    regionPanel.dataset.direction = previous === 'usd' && region === 'eur' ? 'forward' : 'backward';
+    regionPanel.classList.remove('is-changing');
+    void regionPanel.offsetWidth;
+    regionPanel.classList.add('is-changing');
+
+    regionTabs.forEach((tab) => {
+      const active = tab.dataset.region === region;
+      tab.classList.toggle('is-active', active);
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+      if (active) regionPanel.setAttribute('aria-labelledby', tab.id);
+    });
+
+    $('[data-panel-kicker]')?.replaceChildren(data.kicker);
+    $('[data-panel-title]')?.replaceChildren(data.title);
+    $('[data-panel-text]')?.replaceChildren(data.text);
+    $('[data-preview-name]')?.replaceChildren(data.previewName);
+    $('[data-preview-balance]')?.replaceChildren(data.balance);
+    $('[data-detail-label]')?.replaceChildren(data.detailLabel);
+    const flagUse = $('[data-panel-flag] use');
+    flagUse?.setAttribute('href', data.flag);
+    const panelList = $('[data-panel-list]');
+    if (panelList) {
+      panelList.replaceChildren(...data.list.map((text) => {
+        const item = document.createElement('li');
+        const mark = document.createElement('span');
+        mark.setAttribute('aria-hidden', 'true');
+        mark.textContent = '✓';
+        item.append(mark, document.createTextNode(` ${text}`));
+        return item;
+      }));
+    }
+    window.setTimeout(() => {
+      regionSwitch.classList.remove('is-switching');
+      regionPanel.classList.remove('is-changing');
+    }, 520);
   };
 
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => {
-      if (tab.dataset.region === activeRegion) return;
-      tabs.forEach((item) => {
-        const active = item === tab;
-        item.classList.toggle('is-active', active);
-        item.setAttribute('aria-selected', String(active));
-        item.tabIndex = active ? 0 : -1;
-      });
-      renderRegion(tab.dataset.region);
-    });
+  regionTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectRegion(tab.dataset.region));
     tab.addEventListener('keydown', (event) => {
-      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
-      const direction = event.key === 'ArrowRight' ? 1 : -1;
-      const nextIndex = (index + direction + tabs.length) % tabs.length;
-      tabs[nextIndex].focus();
-      tabs[nextIndex].click();
+      let targetIndex = index;
+      if (event.key === 'ArrowRight') targetIndex = (index + 1) % regionTabs.length;
+      if (event.key === 'ArrowLeft') targetIndex = (index - 1 + regionTabs.length) % regionTabs.length;
+      if (event.key === 'Home') targetIndex = 0;
+      if (event.key === 'End') targetIndex = regionTabs.length - 1;
+      regionTabs[targetIndex].focus();
+      selectRegion(regionTabs[targetIndex].dataset.region);
     });
   });
 
-  const searchInput = document.querySelector('#destination-search');
-  const destinationList = document.querySelector('[data-destination-list]');
-  const destinations = [...document.querySelectorAll('[data-keywords]')];
-  const emptyState = document.querySelector('[data-empty]');
-  const showMore = document.querySelector('[data-show-more]');
+  const setupDirectory = ({ inputSelector, listSelector, rowSelector, keywordsAttribute, quickSelector, moreSelector, emptySelector, moreText }) => {
+    const input = $(inputSelector);
+    const list = $(listSelector);
+    const more = $(moreSelector);
+    const empty = $(emptySelector);
+    if (!input || !list) return null;
+    const rows = $$(rowSelector, list);
+    let expanded = false;
 
-  const filterDestinations = () => {
-    if (!searchInput || !destinationList || !emptyState || !showMore) return;
-    const query = searchInput.value.trim().toLowerCase();
-    let visible = 0;
-
-    destinations.forEach((destination) => {
-      const matches = !query || destination.dataset.keywords.includes(query);
-      const allowed = Boolean(query) || destinationList.classList.contains('is-expanded') || destination.classList.contains('is-featured');
-      const show = matches && allowed;
-      destination.hidden = !show;
-      if (show) visible += 1;
-    });
-
-    emptyState.classList.toggle('is-visible', visible === 0);
-    showMore.hidden = Boolean(query);
-  };
-
-  searchInput?.addEventListener('input', filterDestinations);
-  document.querySelectorAll('[data-search]').forEach((button) => {
-    button.addEventListener('click', () => {
-      if (!searchInput) return;
-      searchInput.value = button.dataset.search;
-      filterDestinations();
-      searchInput.focus({ preventScroll: true });
-    });
-  });
-
-  showMore?.addEventListener('click', () => {
-    if (!destinationList) return;
-    const expanded = !destinationList.classList.contains('is-expanded');
-    destinationList.classList.toggle('is-expanded', expanded);
-    showMore.setAttribute('aria-expanded', String(expanded));
-    showMore.innerHTML = `${expanded ? 'Show fewer destinations' : 'View all destinations'} <span aria-hidden="true">↓</span>`;
-    filterDestinations();
-  });
-
-  const faqItems = [...document.querySelectorAll('.faq-item')];
-  faqItems.forEach((item) => {
-    const question = item.querySelector('.faq-question');
-    question?.addEventListener('click', () => {
-      const shouldOpen = !item.classList.contains('is-open');
-      faqItems.forEach((otherItem) => {
-        const open = otherItem === item && shouldOpen;
-        otherItem.classList.toggle('is-open', open);
-        otherItem.querySelector('.faq-question')?.setAttribute('aria-expanded', String(open));
-        otherItem.querySelector('.faq-answer')?.setAttribute('aria-hidden', String(!open));
-      });
-    });
-  });
-
-  // Reusable country list (search + expand/collapse), scoped to its own hooks.
-  const initCountryList = (opts) => {
-    const search = document.querySelector(opts.search);
-    const list = document.querySelector(opts.list);
-    const empty = document.querySelector(opts.empty);
-    const more = document.querySelector(opts.more);
-    const rows = [...document.querySelectorAll(opts.rows)];
-    if (!search || !list || !empty || !more) return;
-
-    const filter = () => {
-      const query = search.value.trim().toLowerCase();
-      let visible = 0;
+    const apply = () => {
+      const query = input.value.trim().toLowerCase();
+      let matches = 0;
+      list.classList.toggle('is-expanded', expanded || Boolean(query));
       rows.forEach((row) => {
-        const matches = !query || (row.dataset[opts.dataKey] || '').includes(query);
-        const allowed = Boolean(query) || list.classList.contains('is-expanded') || row.classList.contains('is-featured');
-        const show = matches && allowed;
-        row.hidden = !show;
-        if (show) visible += 1;
+        const keywords = (row.getAttribute(keywordsAttribute) || row.textContent || '').toLowerCase();
+        const matchesQuery = !query || keywords.includes(query);
+        const allowedByCollapse = expanded || Boolean(query) || row.classList.contains('is-featured');
+        const visible = matchesQuery && allowedByCollapse;
+        row.hidden = !visible;
+        if (visible) matches += 1;
       });
-      empty.classList.toggle('is-visible', visible === 0);
-      more.hidden = Boolean(query);
+      if (more) {
+        more.hidden = Boolean(query);
+        more.setAttribute('aria-expanded', String(expanded));
+        more.firstChild.textContent = expanded ? 'Show fewer ' : moreText;
+      }
+      empty?.classList.toggle('is-visible', matches === 0);
     };
 
-    search.addEventListener('input', filter);
-    document.querySelectorAll(opts.quick).forEach((button) => {
+    input.addEventListener('input', apply);
+    $$(quickSelector).forEach((button) => {
       button.addEventListener('click', () => {
-        search.value = button.dataset[opts.quickKey];
-        filter();
-        search.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        input.value = button.dataset.search || button.dataset.euQuick || '';
+        apply();
+        input.focus({ preventScroll: true });
       });
     });
-    more.addEventListener('click', () => {
-      const expanded = !list.classList.contains('is-expanded');
-      list.classList.toggle('is-expanded', expanded);
-      more.setAttribute('aria-expanded', String(expanded));
-      more.innerHTML = `${expanded ? opts.lessLabel : opts.moreLabel} <span aria-hidden="true">↓</span>`;
-      filter();
+    more?.addEventListener('click', () => {
+      expanded = !expanded;
+      apply();
     });
-    filter();
+    apply();
+    return { input, apply };
   };
 
-  initCountryList({
-    search: '#eu-search',
-    list: '[data-eu-list]',
-    empty: '[data-eu-empty]',
-    more: '[data-eu-more]',
-    rows: '[data-eu-keywords]',
-    dataKey: 'euKeywords',
-    quick: '[data-eu-quick]',
-    quickKey: 'euQuick',
-    moreLabel: 'View all countries',
-    lessLabel: 'Show fewer countries',
+  const mainDirectory = setupDirectory({
+    inputSelector: '#destination-search',
+    listSelector: '[data-destination-list]',
+    rowSelector: '.destination-row',
+    keywordsAttribute: 'data-keywords',
+    quickSelector: '[data-search]',
+    moreSelector: '[data-show-more]',
+    emptySelector: '[data-empty]',
+    moreText: 'View all destinations '
   });
 
-  document.querySelector('[data-year]').textContent = new Date().getFullYear();
-  filterDestinations();
+  setupDirectory({
+    inputSelector: '#eu-search',
+    listSelector: '[data-eu-list]',
+    rowSelector: '.destination-row',
+    keywordsAttribute: 'data-eu-keywords',
+    quickSelector: '[data-eu-quick]',
+    moreSelector: '[data-eu-more]',
+    emptySelector: '[data-eu-empty]',
+    moreText: 'View all countries '
+  });
+
+  $$('[data-hero-search]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (!mainDirectory) return;
+      event.preventDefault();
+      mainDirectory.input.value = link.dataset.heroSearch || '';
+      mainDirectory.apply();
+      $('#destinations')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  $$('.faq-question').forEach((button) => {
+    button.addEventListener('click', () => {
+      const item = button.closest('.faq-item');
+      const answer = button.getAttribute('aria-controls') ? document.getElementById(button.getAttribute('aria-controls')) : null;
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      item?.classList.toggle('is-open', open);
+      button.setAttribute('aria-expanded', String(open));
+      answer?.setAttribute('aria-hidden', String(!open));
+    });
+  });
 })();
