@@ -1625,7 +1625,7 @@ p { text-wrap: pretty; }
 
 /* ===== FAQ page (faq.html) ===== */
 /* Solid, in-flow sticky header on the FAQ page — bounded burger bar, no fixed-offset padding needed */
-.is-faq .site-header { position: sticky; top: 0; background: #fff; border-color: rgba(232, 228, 224, .9); box-shadow: none; }
+.is-faq .site-header { position: sticky; top: 0; background: #fff; border-color: rgba(15, 27, 51, .1); box-shadow: 0 1px 0 rgba(15, 27, 51, .05); }
 .is-faq .site-header.is-scrolled { box-shadow: 0 2px 12px rgba(15, 27, 51, .06); }
 
 .faq-hero { position: relative; overflow: hidden; padding: 22px 0 38px; background: linear-gradient(135deg, #fff 0%, #fff 48%, #fff6f2 100%); }
