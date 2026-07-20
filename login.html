@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Log in to your PayerPay account to manage your USD and EUR account details and send money home.">
+  <meta name="theme-color" content="#0f1b33">
+  <meta name="robots" content="noindex">
+  <title>Log in · PayerPay</title>
+  <link rel="stylesheet" href="styles.css?v=1784575219">
+</head>
+<body class="auth-body">
+  <main class="auth-wrap">
+    <section class="auth-form-side">
+      <div class="auth-topbar">
+        <a class="logo" href="index.html" aria-label="PayerPay home">PayerPay<span aria-hidden="true"></span></a>
+        <p class="auth-top-link">New to PayerPay? <a href="register.html">Create account</a></p>
+      </div>
+
+      <div class="auth-card">
+        <p class="auth-eyebrow">Welcome back</p>
+        <h1>Log in to your account</h1>
+        <p class="auth-sub">Access your USD and EUR account details, track transfers and send money home.</p>
+
+        <form id="login-form" novalidate>
+          <div class="auth-field">
+            <label for="email">Email address</label>
+            <div class="auth-input-wrap">
+              <input class="auth-input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+
+          <div class="auth-field">
+            <label for="password">Password</label>
+            <div class="auth-input-wrap auth-pw-wrap">
+              <input class="auth-input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+              <button class="auth-pw-toggle" type="button" data-pw-toggle aria-label="Show password">
+                <svg data-eye viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg data-eye-off viewBox="0 0 24 24" style="display:none"><path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.2 4.2M9.4 5.2A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4M6.2 6.2A17 17 0 0 0 2 12s3.5 7 10 7a9.6 9.6 0 0 0 3-.5"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-row">
+            <label class="auth-check"><input type="checkbox" name="remember" checked> Remember me</label>
+            <a class="auth-forgot" href="#">Forgot password?</a>
+          </div>
+
+          <button class="button button-primary auth-submit" type="submit">Log in</button>
+        </form>
+
+        <p class="auth-alt">Don't have an account? <a href="register.html">Create one</a></p>
+        <p class="auth-legal-note">Protected by verification, sanctions screening and monitoring. By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</p>
+      </div>
+    </section>
+
+    <aside class="auth-brand-side" aria-hidden="true">
+      <div class="auth-brand-orb auth-brand-orb-1"></div>
+      <div class="auth-brand-inner">
+        <span class="auth-brand-badge"><span class="dot"></span> Money account for expats</span>
+        <h2>Get paid abroad. <em>Send money home locally.</em></h2>
+        <p>One account for your salary, personal transfers and payouts home — through the payment methods your family already knows.</p>
+        <div class="auth-points">
+          <div class="auth-point">
+            <span class="auth-point-ic"><svg viewBox="0 0 24 24"><path d="M4 9h16M7 3v3M17 3v3M5 5h14a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></svg></span>
+            <div><strong>Personal USD &amp; EUR details</strong><span>Receive salary or transfers in your own name.</span></div>
+          </div>
+          <div class="auth-point">
+            <span class="auth-point-ic"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 12l4-4M3 12l4 4M21 6v12"/></svg></span>
+            <div><strong>Local payout methods</strong><span>UPI, PIX, GCash, SEPA and more, at clear rates.</span></div>
+          </div>
+          <div class="auth-point">
+            <span class="auth-point-ic"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <div><strong>Clear fees before sending</strong><span>See the rate, fee and amount received upfront.</span></div>
+          </div>
+        </div>
+        <p class="auth-brand-reg"><strong>PAYER PAY INTERNATIONAL INC.</strong><br>Company ID BC1526086 · FINTRAC MSB C100001025 · Registered with the Bank of Canada under the Retail Payment Activities Act.</p>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    (() => {
+      document.querySelectorAll('[data-pw-toggle]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const input = btn.parentElement.querySelector('input');
+          const show = input.type === 'password';
+          input.type = show ? 'text' : 'password';
+          btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+          btn.querySelector('[data-eye]').style.display = show ? 'none' : '';
+          btn.querySelector('[data-eye-off]').style.display = show ? '' : 'none';
+        });
+      });
+      const form = document.getElementById('login-form');
+      form && form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+        const btn = form.querySelector('.auth-submit');
+        btn.textContent = 'Signing in…';
+        btn.disabled = true;
+        setTimeout(() => { btn.textContent = 'Log in'; btn.disabled = false; }, 1400);
+      });
+    })();
+  </script>
+</body>
+</html>
