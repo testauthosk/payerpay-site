@@ -1458,6 +1458,7 @@ p { text-wrap: pretty; }
     box-shadow: none;
     backdrop-filter: none;
   }
+  .nav-wrap { min-height: 60px; }
   .logo { font-size: 25px; }
   .site-header .logo { z-index: 104; }
   .menu-toggle {
@@ -1487,13 +1488,13 @@ p { text-wrap: pretty; }
     display: block;
     max-height: 0;
     overflow: hidden;
-    padding: 74px 24px 20px;
+    padding: 64px 24px 20px;
     background: #fff;
     box-shadow: 0 24px 44px rgba(15, 27, 51, 0);
     pointer-events: none;
     transition: max-height .4s cubic-bezier(.4, 0, .2, 1), box-shadow .4s ease;
   }
-  .main-nav.is-open { max-height: 380px; box-shadow: 0 24px 44px rgba(15, 27, 51, .13); pointer-events: auto; }
+  .main-nav.is-open { max-height: 372px; box-shadow: 0 24px 44px rgba(15, 27, 51, .13); pointer-events: auto; }
   .main-nav > a:not(.button) { display: block; padding: 12px 4px; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 18px; }
   .main-nav > a:not(.button)::after { display: none; }
   .main-nav .nav-cta { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 14px; min-height: 50px; }
