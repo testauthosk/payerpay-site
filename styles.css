@@ -169,7 +169,10 @@ p { text-wrap: pretty; }
   gap: 31px;
 }
 
-.main-nav > a:not(.button) {
+/* Transparent on desktop so links stay flex items of .main-nav; becomes the padded block on mobile. */
+.main-nav-inner { display: contents; }
+
+.main-nav a:not(.button) {
   position: relative;
   color: #354159;
   font-size: 14px;
@@ -177,7 +180,7 @@ p { text-wrap: pretty; }
   text-decoration: none;
 }
 
-.main-nav > a:not(.button)::after {
+.main-nav a:not(.button)::after {
   position: absolute;
   right: 0;
   bottom: -7px;
@@ -191,8 +194,8 @@ p { text-wrap: pretty; }
   transition: transform .3s var(--ease);
 }
 
-.main-nav > a:not(.button):hover::after,
-.main-nav > a:not(.button):focus-visible::after {
+.main-nav a:not(.button):hover::after,
+.main-nav a:not(.button):focus-visible::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -1421,7 +1424,7 @@ p { text-wrap: pretty; }
   .container { width: min(var(--container), calc(100% - 40px)); }
   .nav-wrap { min-height: 72px; }
   .main-nav { gap: 20px; }
-  .main-nav > a:not(.button) { font-size: 13px; }
+  .main-nav a:not(.button) { font-size: 13px; }
   .hero { min-height: auto; padding: 40px 0 70px; }
   .hero-grid { grid-template-columns: 1fr; gap: 48px; }
   .hero-copy { max-width: 720px; }
@@ -1486,15 +1489,17 @@ p { text-wrap: pretty; }
     display: block;
     max-height: 0;
     overflow: hidden;
-    padding: 64px 24px 20px;
+    padding: 0;
     background: #fff;
     box-shadow: 0 24px 44px rgba(15, 27, 51, 0);
     pointer-events: none;
     transition: max-height .4s cubic-bezier(.4, 0, .2, 1), box-shadow .4s ease;
   }
+  /* Vertical padding lives on the inner block (constant), so the collapsible .main-nav is 0px tall when closed and never overlaps the hero. */
+  .main-nav-inner { display: block; padding: 64px 24px 20px; }
   .main-nav.is-open { max-height: 372px; box-shadow: 0 24px 44px rgba(15, 27, 51, .13); pointer-events: auto; }
-  .main-nav > a:not(.button) { display: block; padding: 12px 4px; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 18px; }
-  .main-nav > a:not(.button)::after { display: none; }
+  .main-nav a:not(.button) { display: block; padding: 12px 4px; border-bottom: 1px solid var(--line); color: var(--navy); font-size: 18px; }
+  .main-nav a:not(.button)::after { display: none; }
   .main-nav .nav-cta { display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 14px; min-height: 50px; }
   .hero { padding: 24px 0 58px; }
   .hero-grid { gap: 43px; }
