@@ -6,7 +6,7 @@ const BUILD = Date.now();
 const bd = new Date(BUILD);
 const p2 = (n) => ('0' + n).slice(-2);
 const BUILD_LABEL = p2(bd.getUTCHours()) + ':' + p2(bd.getUTCMinutes()) + ':' + p2(bd.getUTCSeconds()) + ' UTC';
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.ico': 'image/x-icon', '.webp': 'image/webp', '.woff2': 'font/woff2' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 
 // Проставляет ?v=BUILD в ссылки на локальные css/js, чтобы старый кэш не подменял свежий файл.
 const versionAssets = (html) => html.replace(/(\b(?:href|src)=")(styles\.css|app\.js|faq\.js)(?:\?v=[^"]*)?(")/g, `$1$2?v=${BUILD}$3`);
