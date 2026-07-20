@@ -1836,3 +1836,7 @@ textarea.auth-input { height: auto; min-height: 138px; padding: 14px 16px; line-
 @media (max-width: 480px) {
   .contact-row2 { grid-template-columns: 1fr; }
 }
+
+.contact-lead { max-width: 560px; margin: 12px 0 12px; color: var(--muted); font-size: 15.5px; line-height: 1.62; }
+.contact-reg-details { display: grid; gap: 3px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.contact-reg-details strong { color: var(--navy); font-size: 13px; font-weight: 850; letter-spacing: .02em; }
