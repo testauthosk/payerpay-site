@@ -2,7 +2,7 @@
    Loaded alongside styles.css, so it inherits the shared :root tokens. */
 
 .guide-section { padding: 30px 0 84px; background: linear-gradient(180deg, #faf7f4 0, #fff 100%); }
-.guide-layout { display: grid; grid-template-columns: 268px minmax(0, 1fr); gap: 46px; align-items: start; max-width: 1080px; margin: 0 auto; }
+.guide-layout { display: grid; grid-template-columns: 268px minmax(0, 1fr); gap: 46px; align-items: start; max-width: 1080px; margin: 0; }
 
 .guide-nav { position: sticky; top: 92px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: var(--shadow-sm); overflow: hidden; }
 .guide-nav-head { padding: 18px 18px 4px; }

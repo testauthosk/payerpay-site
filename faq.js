@@ -52,14 +52,35 @@
   };
   const catsPanel = $('.faq-page-cats');
   const headerGap = () => (header?.offsetHeight || 72) + 14;
-  // Open a topic and pin its header to the top — layout is set instantly (no accordion
-  // animation) so the scroll target is correct and the page doesn't jump afterwards.
+
+  // Gentle eased scroll (smoother than the browser's native "smooth", which flies).
+  let scrollRAF = null;
+  const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const smoothScrollTo = (targetY, duration) => {
+    if (scrollRAF) cancelAnimationFrame(scrollRAF);
+    const startY = window.scrollY;
+    const dist = targetY - startY;
+    if (Math.abs(dist) < 2) return;
+    duration = duration || Math.min(720, Math.max(360, Math.abs(dist) * 0.6));
+    let startT = null;
+    const step = (ts) => {
+      if (startT === null) startT = ts;
+      const p = Math.min(1, (ts - startT) / duration);
+      window.scrollTo(0, startY + dist * easeInOutCubic(p));
+      if (p < 1) scrollRAF = requestAnimationFrame(step);
+    };
+    scrollRAF = requestAnimationFrame(step);
+  };
+
+  // Open a topic and glide its header to the top. Others close instantly so the layout
+  // above the target is stable (no jump), but the target opens ANIMATED (soft expand).
   const jumpToCat = (category) => {
     catsPanel?.classList.add('is-instant');
-    openCatSolo(category);
-    void category.offsetHeight; // force reflow → final layout before measuring
-    window.scrollTo({ top: category.getBoundingClientRect().top + window.scrollY - headerGap(), behavior: 'smooth' });
-    window.setTimeout(() => catsPanel?.classList.remove('is-instant'), 520);
+    cats.forEach((c) => { if (c !== category) setCatOpen(c, false); });
+    void (catsPanel && catsPanel.offsetHeight); // reflow with the others already closed
+    catsPanel?.classList.remove('is-instant');
+    setCatOpen(category, true); // soft animated expand
+    smoothScrollTo(category.getBoundingClientRect().top + window.scrollY - headerGap());
   };
 
   cats.forEach((category) => {
@@ -182,14 +203,7 @@
       activeLink = links[0];
       requestAnimationFrame(() => moveMarker(links[0], false));
     }
-    if ('IntersectionObserver' in window) {
-      const spy = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.target._indexLink) setActive(entry.target._indexLink);
-        });
-      }, { rootMargin: '-38% 0px -55% 0px', threshold: 0 });
-      cats.forEach((category) => spy.observe(category));
-    }
+    // The indicator moves only on click — no scroll-driven movement.
     window.addEventListener('resize', () => moveMarker(activeLink, false));
   }
 
