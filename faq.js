@@ -59,6 +59,41 @@
     });
   });
 
+  // Sticky topic index — built from the categories, with scroll-spy
+  const indexNav = $('[data-faq-index]');
+  if (indexNav) {
+    const cats = $$('[data-faq-cat]');
+    const links = [];
+    const setActive = (link) => links.forEach((l) => l.classList.toggle('is-active', l === link));
+    cats.forEach((cat) => {
+      const title = ($('.faq-cat-title', cat)?.textContent || '').trim();
+      const num = (($('.faq-cat-count', cat)?.textContent || '').match(/\d+/) || [''])[0];
+      const link = document.createElement('a');
+      link.className = 'faq-index-link';
+      link.href = '#';
+      link.innerHTML = `<span>${title}</span><em>${num}</em>`;
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const head = $('.faq-cat-head', cat);
+        if (head && head.getAttribute('aria-expanded') !== 'true') head.click();
+        const y = cat.getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        setActive(link);
+      });
+      indexNav.appendChild(link);
+      cat._indexLink = link;
+      links.push(link);
+    });
+    if ('IntersectionObserver' in window) {
+      const spy = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.target._indexLink) setActive(entry.target._indexLink);
+        });
+      }, { rootMargin: '-38% 0px -55% 0px', threshold: 0 });
+      cats.forEach((cat) => spy.observe(cat));
+    }
+  }
+
   const hashTarget = window.location.hash ? document.querySelector(window.location.hash) : null;
   if (hashTarget) {
     const category = hashTarget.closest('[data-faq-cat]');
