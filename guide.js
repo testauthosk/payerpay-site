@@ -65,6 +65,10 @@
     const startY = window.scrollY;
     const dist = targetY - startY;
     if (Math.abs(dist) < 2) return;
+    // Override the global html { scroll-behavior: smooth } so our per-frame scrollTo
+    // is instant (otherwise the native smooth fights it and it freezes/snaps).
+    const root = document.documentElement;
+    root.style.scrollBehavior = 'auto';
     const duration = Math.min(720, Math.max(340, Math.abs(dist) * 0.6));
     let startT = null;
     const step = (ts) => {
@@ -72,6 +76,7 @@
       const p = Math.min(1, (ts - startT) / duration);
       window.scrollTo(0, startY + dist * easeInOutCubic(p));
       if (p < 1) scrollRAF = requestAnimationFrame(step);
+      else root.style.scrollBehavior = '';
     };
     scrollRAF = requestAnimationFrame(step);
   };

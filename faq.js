@@ -83,6 +83,11 @@
     const startY = window.scrollY;
     const dist = targetY - startY;
     if (Math.abs(dist) < 2) { if (done) done(); return; }
+    // The site sets html { scroll-behavior: smooth } globally, which would turn every
+    // per-frame scrollTo below into its own native animation (they fight → freeze/snap).
+    // Force instant scrolling for the duration of our own eased animation.
+    const root = document.documentElement;
+    root.style.scrollBehavior = 'auto';
     const duration = Math.min(720, Math.max(360, Math.abs(dist) * 0.6));
     let startT = null;
     const step = (ts) => {
@@ -90,7 +95,7 @@
       const p = Math.min(1, (ts - startT) / duration);
       window.scrollTo(0, startY + dist * easeInOutCubic(p));
       if (p < 1) scrollRAF = requestAnimationFrame(step);
-      else if (done) done();
+      else { root.style.scrollBehavior = ''; if (done) done(); }
     };
     scrollRAF = requestAnimationFrame(step);
   };
