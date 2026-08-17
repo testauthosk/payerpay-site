@@ -1283,6 +1283,8 @@ p { text-wrap: pretty; }
 
 .site-footer { position: relative; overflow: hidden; padding: 72px 0 0; background: radial-gradient(1200px 420px at 82% -8%, rgba(255, 101, 77, .16), transparent 60%), #091326; color: #fff; }
 .logo-light { color: #fff; }
+.logo-light .logo-img { height: 46px; }
+@media (max-width: 760px) { .logo-light .logo-img { height: 36px; } }
 
 .footer-top { display: grid; grid-template-columns: 1.35fr 2fr; gap: 60px; padding-bottom: 44px; }
 .footer-tagline { max-width: 360px; margin: 20px 0 26px; color: #aeb8c8; font-size: 14.5px; line-height: 1.62; }
