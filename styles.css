@@ -142,7 +142,7 @@ p { text-wrap: pretty; }
   position: relative;
   z-index: 2;
   display: inline-flex;
-  align-items: flex-start;
+  align-items: center;
   color: var(--navy);
   font-size: 28px;
   font-weight: 900;
@@ -150,6 +150,8 @@ p { text-wrap: pretty; }
   line-height: 1;
   text-decoration: none;
 }
+.logo-img { height: 30px; width: auto; display: block; }
+@media (max-width: 760px) { .logo-img { height: 26px; } }
 
 .logo span {
   width: 9px;
