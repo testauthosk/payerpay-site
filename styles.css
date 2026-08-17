@@ -1669,6 +1669,26 @@ p { text-wrap: pretty; }
 .faq-hero-stats .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(15, 27, 51, .2); }
 .faq-hero-note { max-width: 630px; margin-top: 22px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; background: #faf8f6; color: #7a8598; font-size: 12px; line-height: 1.6; }
 
+/* Hero: text left + FAQ-preview card right (fills the right side) */
+.faq-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 430px); gap: 54px; align-items: center; max-width: 1040px; margin: 6px 0 0; }
+.faq-hero-text { min-width: 0; }
+.faq-hero-text h1 { margin-top: 0; }
+.fhc-card { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 30px 64px rgba(15, 27, 51, .11); transform: rotate(-1.3deg); }
+.fhc-row { padding: 15px 16px; border: 1px solid var(--line); border-radius: 14px; background: #fbfaf8; }
+.fhc-row.is-open { border-color: rgba(255, 101, 77, .28); background: #fff7f3; box-shadow: 0 10px 22px rgba(15, 27, 51, .05); }
+.fhc-q { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--navy); font-size: 13.5px; font-weight: 800; line-height: 1.35; }
+.fhc-ic { position: relative; flex: none; width: 22px; height: 22px; border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.fhc-ic::before, .fhc-ic::after { content: ""; position: absolute; top: 50%; left: 50%; width: 9px; height: 2px; border-radius: 2px; background: var(--muted); transform: translate(-50%, -50%); }
+.fhc-ic::after { transform: translate(-50%, -50%) rotate(90deg); }
+.fhc-row.is-open .fhc-ic { border-color: var(--coral); background: var(--coral); }
+.fhc-row.is-open .fhc-ic::before { background: #fff; }
+.fhc-row.is-open .fhc-ic::after { opacity: 0; }
+.fhc-a { margin-top: 10px; color: var(--muted); font-size: 12.5px; line-height: 1.6; }
+@media (max-width: 900px) {
+  .faq-hero-grid { grid-template-columns: 1fr; gap: 0; }
+  .faq-hero-visual { display: none; }
+}
+
 .faq-page { padding: 42px 0 96px; background: linear-gradient(180deg, #faf7f4 0, #fff 100%); }
 
 /* Two-pane help-centre: sticky topic index + one grouped content panel */
