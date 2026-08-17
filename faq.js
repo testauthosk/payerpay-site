@@ -50,9 +50,16 @@
     cats.forEach((c) => { if (c !== category) setCatOpen(c, false); });
     setCatOpen(category, true);
   };
-  const scrollToCat = (category) => {
-    const y = category.getBoundingClientRect().top + window.scrollY - 88;
-    window.scrollTo({ top: y, behavior: 'smooth' });
+  const catsPanel = $('.faq-page-cats');
+  const headerGap = () => (header?.offsetHeight || 72) + 14;
+  // Open a topic and pin its header to the top — layout is set instantly (no accordion
+  // animation) so the scroll target is correct and the page doesn't jump afterwards.
+  const jumpToCat = (category) => {
+    catsPanel?.classList.add('is-instant');
+    openCatSolo(category);
+    void category.offsetHeight; // force reflow → final layout before measuring
+    window.scrollTo({ top: category.getBoundingClientRect().top + window.scrollY - headerGap(), behavior: 'smooth' });
+    window.setTimeout(() => catsPanel?.classList.remove('is-instant'), 520);
   };
 
   cats.forEach((category) => {
@@ -72,10 +79,13 @@
     button?.setAttribute('aria-expanded', String(open));
     answer?.setAttribute('aria-hidden', String(!open));
   };
-  $$('.faq-item').forEach((item) => {
+  const allItems = $$('.faq-item');
+  allItems.forEach((item) => {
     setItemOpen(item, false);
     $('.faq-question', item)?.addEventListener('click', () => {
-      setItemOpen(item, !item.classList.contains('is-open'));
+      const willOpen = !item.classList.contains('is-open');
+      if (willOpen) allItems.forEach((other) => { if (other !== item) setItemOpen(other, false); });
+      setItemOpen(item, willOpen);
     });
   });
 
@@ -143,8 +153,7 @@
       link.addEventListener('click', (event) => {
         event.preventDefault();
         clearSearch();
-        openCatSolo(category);
-        scrollToCat(category);
+        jumpToCat(category);
         setActive(link);
       });
       indexNav.appendChild(link);

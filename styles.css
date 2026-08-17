@@ -1702,6 +1702,9 @@ p { text-wrap: pretty; }
 .faq-search-input:focus { outline: 0; border-color: rgba(255, 101, 77, .5); box-shadow: 0 0 0 4px rgba(255, 101, 77, .12); }
 .faq-search-status { margin: 0 0 12px 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
 
+/* Jump-to-topic: set layout instantly so the smooth scroll lands on the pinned header */
+.faq-page-cats.is-instant .faq-cat-body { transition: none; }
+
 /* Search mode: matched questions listed (collapsed) under static-open topics */
 .faq-page-cats.is-searching .faq-cat-body { grid-template-rows: 1fr; transition: none; }
 .faq-page-cats.is-searching .faq-cat { background: transparent; }
