@@ -107,11 +107,10 @@
         $$('.faq-item', category).forEach((it) => {
           const match = words.every((w) => it._text.includes(w));
           it.hidden = !match;
-          setItemOpen(it, match); // open matches so the answer shows
+          setItemOpen(it, false); // list matches collapsed — the user expands what they need
           if (match) hits++;
         });
         category.hidden = hits === 0;
-        setCatOpen(category, hits > 0);
         total += hits;
       });
 
@@ -122,7 +121,7 @@
           : `Nothing found for “${raw}” — try another word.`;
       }
     };
-    searchInput.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(runSearch, 110); });
+    searchInput.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(runSearch, 140); });
     searchInput.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') { searchInput.value = ''; runSearch(); searchInput.blur(); }
     });

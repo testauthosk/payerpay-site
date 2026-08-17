@@ -1702,10 +1702,13 @@ p { text-wrap: pretty; }
 .faq-search-input:focus { outline: 0; border-color: rgba(255, 101, 77, .5); box-shadow: 0 0 0 4px rgba(255, 101, 77, .12); }
 .faq-search-status { margin: 0 0 12px 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
 
-/* During search: no open/close animation, results appear instantly */
-.faq-page-cats.is-searching .faq-cat-body,
-.faq-page-cats.is-searching .faq-item > .faq-answer,
-.faq-page-cats.is-searching .faq-answer-inner { transition: none; }
+/* Search mode: matched questions listed (collapsed) under static-open topics */
+.faq-page-cats.is-searching .faq-cat-body { grid-template-rows: 1fr; transition: none; }
+.faq-page-cats.is-searching .faq-cat { background: transparent; }
+.faq-page-cats.is-searching .faq-cat-toggle { visibility: hidden; }
+.faq-page-cats.is-searching .faq-cat-head { cursor: default; }
+@keyframes faqFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.faq-page-cats.is-searching .faq-item:not([hidden]) { animation: faqFade .18s ease; }
 
 /* First steps after registration */
 .faq-firststeps { padding: 8px 0 84px; background: linear-gradient(180deg, #fff 0, #faf7f4 100%); }
