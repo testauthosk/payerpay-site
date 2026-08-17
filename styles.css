@@ -150,8 +150,8 @@ p { text-wrap: pretty; }
   line-height: 1;
   text-decoration: none;
 }
-.logo-img { height: 30px; width: auto; display: block; }
-@media (max-width: 760px) { .logo-img { height: 26px; } }
+.logo-img { height: 39px; width: auto; display: block; }
+@media (max-width: 760px) { .logo-img { height: 27px; } }
 
 .logo span {
   width: 9px;
