@@ -179,3 +179,26 @@
   activate(first, { scroll: false, push: false, instant: true });
   requestAnimationFrame(() => moveMarker(navLinks.find((l) => l.classList.contains('is-active')), false));
 })();
+
+/* Screenshot lightbox — click a shot to view full size, click/Esc to close */
+(function () {
+  const overlay = document.createElement('div');
+  overlay.className = 'guide-lightbox';
+  overlay.hidden = true;
+  const img = document.createElement('img');
+  img.alt = '';
+  overlay.appendChild(img);
+  document.body.appendChild(overlay);
+  const close = () => { overlay.hidden = true; img.removeAttribute('src'); document.body.style.overflow = ''; };
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-shot]');
+    if (btn) {
+      img.src = btn.getAttribute('data-shot');
+      overlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+    if (!overlay.hidden && overlay.contains(e.target)) close();
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) close(); });
+})();
