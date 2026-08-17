@@ -58,19 +58,19 @@
   // "everything flies to the top" jerk). Released — gliding — once the scroll settles,
   // below the fold, so the footer eases up instead of snapping.
   let spacer = null;
-  const reserveTo = (minHeight) => {
+  const setReserve = (px) => {
     if (!spacer) {
       spacer = document.createElement('div');
       spacer.setAttribute('aria-hidden', 'true');
-      spacer.style.cssText = 'height:0;flex:none;pointer-events:none';
+      spacer.style.cssText = 'height:0px;flex:none;pointer-events:none';
       (document.querySelector('main') || document.body).appendChild(spacer);
     }
-    const contentH = document.documentElement.scrollHeight - (parseFloat(spacer.style.height) || 0);
     spacer.style.transition = 'none';
-    spacer.style.height = Math.max(0, minHeight - contentH) + 'px';
+    spacer.style.height = px + 'px';
+    void spacer.offsetHeight;
   };
   const releaseReserve = () => {
-    if (!spacer || parseFloat(spacer.style.height) === 0) return;
+    if (!spacer) return;
     spacer.style.transition = 'height .42s cubic-bezier(.4, 0, .2, 1)';
     spacer.style.height = '0px';
   };
@@ -99,14 +99,15 @@
   // target); the target opens ANIMATED (soft expand). The reserve stops the collapse
   // from clamping the scroll, so the page glides instead of jumping.
   const jumpToCat = (category) => {
-    const oldHeight = document.documentElement.scrollHeight;
+    // Reserve a generous buffer FIRST (before collapsing) so the shrink can't clamp the
+    // scroll to the top. Released — gliding, below the fold — once the scroll settles.
+    setReserve(Math.round(window.innerHeight * 2.2));
     catsPanel?.classList.add('is-instant');
     cats.forEach((c) => { if (c !== category) setCatOpen(c, false); });
     void (catsPanel && catsPanel.offsetHeight); // reflow with the others already closed
     catsPanel?.classList.remove('is-instant');
     setCatOpen(category, true); // soft animated expand
     const targetY = category.getBoundingClientRect().top + window.scrollY - headerGap();
-    reserveTo(Math.max(oldHeight, targetY + window.innerHeight + 40));
     smoothScrollTo(targetY, releaseReserve);
   };
 
