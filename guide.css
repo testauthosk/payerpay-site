@@ -12,11 +12,13 @@
 .guide-search input { width: 100%; padding: 10px 12px 10px 36px; border: 1px solid var(--line); border-radius: 11px; background: #faf8f6; font-family: inherit; font-size: 13px; color: var(--ink); transition: border-color .2s, box-shadow .2s, background .2s; }
 .guide-search input:focus { outline: none; border-color: var(--coral); box-shadow: 0 0 0 3px var(--coral-soft); background: #fff; }
 .guide-search svg { position: absolute; left: 26px; top: 21px; width: 15px; height: 15px; fill: none; stroke: #9aa3b2; stroke-width: 2; stroke-linecap: round; pointer-events: none; }
-.guide-nav-list { list-style: none; margin: 0; padding: 4px 8px 12px; display: flex; flex-direction: column; gap: 2px; }
-.guide-nav-link { display: flex; align-items: center; gap: 11px; width: 100%; padding: 9px 10px; border: 0; border-radius: 11px; background: transparent; text-align: left; cursor: pointer; color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 650; line-height: 1.3; transition: background .18s ease, color .18s ease; }
-.guide-nav-link:hover { background: #f6f3f0; }
+.guide-nav-list { position: relative; list-style: none; margin: 0; padding: 4px 8px 12px; display: flex; flex-direction: column; gap: 2px; }
+.guide-nav-marker { position: absolute; top: 0; left: 0; width: 0; height: 0; border-radius: 11px; background: var(--coral-soft); opacity: 0; pointer-events: none; z-index: 0; transition: top .34s cubic-bezier(.4, 0, .2, 1), left .34s cubic-bezier(.4, 0, .2, 1), width .34s cubic-bezier(.4, 0, .2, 1), height .34s cubic-bezier(.4, 0, .2, 1), opacity .2s ease; }
+.guide-nav-link { position: relative; z-index: 1; display: flex; align-items: center; gap: 11px; width: 100%; padding: 9px 10px; border: 0; border-radius: 11px; background: transparent; text-align: left; cursor: pointer; color: var(--ink); font: inherit; font-size: 13.5px; font-weight: 650; line-height: 1.3; transition: color .18s ease; }
+.guide-nav-link:hover { color: var(--navy); }
 .guide-nav-num { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px; background: #eef1f6; color: var(--muted); font-size: 12px; font-weight: 800; transition: background .18s ease, color .18s ease; }
-.guide-nav-link.is-active { background: var(--coral-soft); color: var(--coral-dark); }
+.guide-nav-link:hover .guide-nav-num { background: #e2e6ee; }
+.guide-nav-link.is-active { background: transparent; color: var(--coral-dark); }
 .guide-nav-link.is-active .guide-nav-num { background: var(--coral); color: #fff; }
 .guide-nav-empty { display: none; padding: 4px 16px 16px; font-size: 12.5px; color: var(--muted); }
 .guide-nav.is-empty .guide-nav-empty { display: block; }

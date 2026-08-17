@@ -38,6 +38,22 @@
   const section = $('.guide-section');
   if (!chapters.length) return;
 
+  // Gliding active indicator in the chapter nav
+  const navList = $('.guide-nav-list');
+  const marker = document.createElement('span');
+  marker.className = 'guide-nav-marker';
+  navList?.appendChild(marker);
+  const moveMarker = (link, animate) => {
+    if (!link || !navList) return;
+    if (animate === false) marker.style.transition = 'none';
+    marker.style.opacity = '1';
+    marker.style.top = link.offsetTop + 'px';
+    marker.style.left = link.offsetLeft + 'px';
+    marker.style.width = link.offsetWidth + 'px';
+    marker.style.height = link.offsetHeight + 'px';
+    if (animate === false) { void marker.offsetWidth; marker.style.transition = ''; }
+  };
+
   const headerGap = () => (header?.offsetHeight || 72) + 12;
   const titleOf = (id) => {
     const link = navLinks.find((l) => l.dataset.target === id);
@@ -53,6 +69,7 @@
       l.classList.toggle('is-active', on);
       l.setAttribute('aria-current', on ? 'true' : 'false');
     });
+    moveMarker(navLinks.find((l) => l.dataset.target === id), opts.instant ? false : true);
     if (navCurrent) navCurrent.textContent = titleOf(id);
     if (guideNav) { guideNav.classList.remove('is-open'); navToggle?.setAttribute('aria-expanded', 'false'); }
     if (opts.push !== false && history.replaceState) history.replaceState(null, '', '#' + id);
@@ -68,8 +85,10 @@
       const open = !guideNav.classList.contains('is-open');
       guideNav.classList.toggle('is-open', open);
       navToggle.setAttribute('aria-expanded', String(open));
+      if (open) requestAnimationFrame(() => moveMarker(navLinks.find((l) => l.classList.contains('is-active')), false));
     });
   }
+  window.addEventListener('resize', () => moveMarker(navLinks.find((l) => l.classList.contains('is-active')), false));
 
   const search = $('[data-guide-search]');
   if (search) search.addEventListener('input', () => {
@@ -92,5 +111,6 @@
 
   const initial = (window.location.hash || '').replace('#', '');
   const first = chapters.some((c) => c.id === initial) ? initial : chapters[0].id;
-  activate(first, { scroll: false, push: false });
+  activate(first, { scroll: false, push: false, instant: true });
+  requestAnimationFrame(() => moveMarker(navLinks.find((l) => l.classList.contains('is-active')), false));
 })();

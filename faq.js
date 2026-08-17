@@ -138,18 +138,35 @@
     clearSearch = () => { if (searchInput.value) { searchInput.value = ''; runSearch(); } };
   }
 
-  // ---- Sticky topic index — built from the categories, with scroll-spy ----
+  // ---- Sticky topic index — numbered nav with a gliding active indicator ----
   const indexNav = $('[data-faq-index]');
   if (indexNav) {
+    const marker = document.createElement('span');
+    marker.className = 'faq-index-marker';
+    indexNav.appendChild(marker);
     const links = [];
-    const setActive = (link) => links.forEach((l) => l.classList.toggle('is-active', l === link));
-    cats.forEach((category) => {
+    let activeLink = null;
+    const moveMarker = (link, animate) => {
+      if (!link) return;
+      if (animate === false) marker.style.transition = 'none';
+      marker.style.opacity = '1';
+      marker.style.top = link.offsetTop + 'px';
+      marker.style.left = link.offsetLeft + 'px';
+      marker.style.width = link.offsetWidth + 'px';
+      marker.style.height = link.offsetHeight + 'px';
+      if (animate === false) { void marker.offsetWidth; marker.style.transition = ''; }
+    };
+    const setActive = (link) => {
+      activeLink = link;
+      links.forEach((l) => l.classList.toggle('is-active', l === link));
+      moveMarker(link);
+    };
+    cats.forEach((category, i) => {
       const title = ($('.faq-cat-title', category)?.textContent || '').trim();
-      const num = (($('.faq-cat-count', category)?.textContent || '').match(/\d+/) || [''])[0];
       const link = document.createElement('a');
       link.className = 'faq-index-link';
       link.href = '#';
-      link.innerHTML = `<span>${title}</span><em>${num}</em>`;
+      link.innerHTML = `<span class="faq-index-num">${i + 1}</span><span class="faq-index-text">${title}</span>`;
       link.addEventListener('click', (event) => {
         event.preventDefault();
         clearSearch();
@@ -160,6 +177,11 @@
       category._indexLink = link;
       links.push(link);
     });
+    if (links[0]) {
+      links[0].classList.add('is-active');
+      activeLink = links[0];
+      requestAnimationFrame(() => moveMarker(links[0], false));
+    }
     if ('IntersectionObserver' in window) {
       const spy = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -168,6 +190,7 @@
       }, { rootMargin: '-38% 0px -55% 0px', threshold: 0 });
       cats.forEach((category) => spy.observe(category));
     }
+    window.addEventListener('resize', () => moveMarker(activeLink, false));
   }
 
   // ---- "First steps" cards jump into the matching category ----
