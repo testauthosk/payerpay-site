@@ -9,7 +9,7 @@ const BUILD_LABEL = p2(bd.getUTCHours()) + ':' + p2(bd.getUTCMinutes()) + ':' + 
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 
 // Проставляет ?v=BUILD в ссылки на локальные css/js, чтобы старый кэш не подменял свежий файл.
-const versionAssets = (html) => html.replace(/(\b(?:href|src)=")(styles\.css|guide\.css|app\.js|faq\.js|guide\.js|cselect\.js)(?:\?v=[^"]*)?(")/g, `$1$2?v=${BUILD}$3`);
+const versionAssets = (html) => html.replace(/(\b(?:href|src)=")(\/?(?:styles\.css|guide\.css|app\.js|faq\.js|guide\.js|cselect\.js|landing\.css|landing\.js))(?:\?v=[^"]*)?(")/g, `$1$2?v=${BUILD}$3`);
 // Видимый штамп сборки (только при ?debug) — чтобы сразу видеть, свежая ли страница.
 const BADGE = `<div style="position:fixed;bottom:8px;right:10px;z-index:99999;font:700 11px system-ui,-apple-system,sans-serif;color:#fff;background:#C0552E;padding:4px 9px;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,.25);pointer-events:none">build ${BUILD_LABEL}</div>`;
 
@@ -26,7 +26,20 @@ http.createServer((req, res) => {
   const f = path.normalize(path.join(root, p));
   if (!f.startsWith(root)) { res.writeHead(403); return res.end('403'); }
   fs.readFile(f, (e, data) => {
-    if (e) { // фолбэк на index.html
+    if (e) {
+      // Чистые URL без расширения (/usd-account-non-us-residents) → отдать <slug>/index.html
+      if (!path.extname(p)) {
+        fs.readFile(path.join(f, 'index.html'), (e3, d3) => {
+          if (!e3) return sendHtml(res, d3, req.url);
+          // иначе фолбэк на корневой index.html
+          fs.readFile(path.join(root, 'index.html'), (e2, d2) => {
+            if (e2) { res.writeHead(404); res.end('Not found'); }
+            else sendHtml(res, d2, req.url);
+          });
+        });
+        return;
+      }
+      // фолбэк на index.html
       fs.readFile(path.join(root, 'index.html'), (e2, d2) => {
         if (e2) { res.writeHead(404); res.end('Not found'); }
         else sendHtml(res, d2, req.url);

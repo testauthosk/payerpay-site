@@ -849,6 +849,8 @@ p { text-wrap: pretty; }
 .route-card {
   --route-accent: var(--coral);
   --route-soft: var(--coral-soft);
+  text-decoration: none;
+  color: inherit;
   position: relative;
   overflow: hidden;
   min-height: 302px;
