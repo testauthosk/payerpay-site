@@ -1670,9 +1670,11 @@ p { text-wrap: pretty; }
 .faq-hero-note { max-width: 630px; margin-top: 22px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 12px; background: #faf8f6; color: #7a8598; font-size: 12px; line-height: 1.6; }
 
 /* Hero: text left + FAQ-preview card right (fills the right side) */
-.faq-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 430px); gap: 54px; align-items: center; max-width: 1040px; margin: 6px 0 0; }
+.faq-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: 40px; align-items: center; max-width: none; margin: 6px 0 0; }
 .faq-hero-text { min-width: 0; }
 .faq-hero-text h1 { margin-top: 0; }
+.faq-hero-visual { position: relative; min-width: 0; }
+.faq-hero-img { display: block; width: 100%; height: auto; -webkit-mask-image: radial-gradient(ellipse 92% 92% at 50% 50%, #000 56%, rgba(0,0,0,.98) 72%, rgba(0,0,0,.5) 88%, transparent 100%); mask-image: radial-gradient(ellipse 92% 92% at 50% 50%, #000 56%, rgba(0,0,0,.98) 72%, rgba(0,0,0,.5) 88%, transparent 100%); }
 .fhc-card { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 30px 64px rgba(15, 27, 51, .11); transform: rotate(-1.3deg); }
 .fhc-row { padding: 15px 16px; border: 1px solid var(--line); border-radius: 14px; background: #fbfaf8; }
 .fhc-row.is-open { border-color: rgba(255, 101, 77, .28); background: #fff7f3; box-shadow: 0 10px 22px rgba(15, 27, 51, .05); }
@@ -1692,7 +1694,7 @@ p { text-wrap: pretty; }
 .faq-page { padding: 42px 0 96px; background: linear-gradient(180deg, #faf7f4 0, #fff 100%); }
 
 /* Two-pane help-centre: sticky topic index + one grouped content panel */
-.faq-layout { display: grid; grid-template-columns: 244px minmax(0, 1fr); gap: 46px; align-items: start; max-width: 1040px; margin: 0; }
+.faq-layout { display: grid; grid-template-columns: 244px minmax(0, 1fr); gap: 46px; align-items: start; max-width: none; margin: 0; }
 
 .faq-index { position: sticky; top: 92px; align-self: start; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: var(--shadow-sm); overflow: hidden; }
 .faq-index-head { padding: 18px 18px 10px; }

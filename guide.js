@@ -55,6 +55,52 @@
   };
 
   const headerGap = () => (header?.offsetHeight || 72) + 12;
+  const gcontent = $('.guide-content');
+
+  // Gentle eased scroll (smoother than native "smooth").
+  let scrollRAF = null;
+  const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const smoothScrollTo = (targetY) => {
+    if (scrollRAF) cancelAnimationFrame(scrollRAF);
+    const startY = window.scrollY;
+    const dist = targetY - startY;
+    if (Math.abs(dist) < 2) return;
+    const duration = Math.min(720, Math.max(340, Math.abs(dist) * 0.6));
+    let startT = null;
+    const step = (ts) => {
+      if (startT === null) startT = ts;
+      const p = Math.min(1, (ts - startT) / duration);
+      window.scrollTo(0, startY + dist * easeInOutCubic(p));
+      if (p < 1) scrollRAF = requestAnimationFrame(step);
+    };
+    scrollRAF = requestAnimationFrame(step);
+  };
+
+  // Animate the content-area height between chapters so the footer glides, not snaps.
+  let heightCleanup = null;
+  const animateContentHeight = (mutate) => {
+    if (!gcontent) { mutate(); return; }
+    if (heightCleanup) heightCleanup();
+    const oldH = gcontent.offsetHeight;
+    mutate();
+    const newH = gcontent.offsetHeight;
+    if (Math.abs(newH - oldH) < 4) return;
+    gcontent.style.height = oldH + 'px';
+    gcontent.style.overflow = 'hidden';
+    void gcontent.offsetHeight;
+    gcontent.style.transition = 'height .44s cubic-bezier(.4, 0, .2, 1)';
+    gcontent.style.height = newH + 'px';
+    const cleanup = () => {
+      gcontent.style.height = ''; gcontent.style.overflow = ''; gcontent.style.transition = '';
+      gcontent.removeEventListener('transitionend', onEnd);
+      heightCleanup = null;
+    };
+    const onEnd = (e) => { if (e.propertyName === 'height') cleanup(); };
+    gcontent.addEventListener('transitionend', onEnd);
+    heightCleanup = cleanup;
+    window.setTimeout(() => { if (heightCleanup) cleanup(); }, 620);
+  };
+
   const titleOf = (id) => {
     const link = navLinks.find((l) => l.dataset.target === id);
     return link ? (link.querySelector('.guide-nav-text').textContent || '').trim() : '';
@@ -63,7 +109,8 @@
   const activate = (id, opts) => {
     opts = opts || {};
     if (!document.getElementById(id)) return;
-    chapters.forEach((c) => c.classList.toggle('is-active', c.id === id));
+    const swap = () => chapters.forEach((c) => c.classList.toggle('is-active', c.id === id));
+    if (opts.instant) swap(); else animateContentHeight(swap);
     navLinks.forEach((l) => {
       const on = l.dataset.target === id;
       l.classList.toggle('is-active', on);
@@ -74,7 +121,7 @@
     if (guideNav) { guideNav.classList.remove('is-open'); navToggle?.setAttribute('aria-expanded', 'false'); }
     if (opts.push !== false && history.replaceState) history.replaceState(null, '', '#' + id);
     if (opts.scroll !== false && section) {
-      window.scrollTo({ top: section.getBoundingClientRect().top + window.scrollY - headerGap(), behavior: 'smooth' });
+      smoothScrollTo(section.getBoundingClientRect().top + window.scrollY - headerGap());
     }
   };
 

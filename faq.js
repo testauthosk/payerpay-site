@@ -53,34 +53,61 @@
   const catsPanel = $('.faq-page-cats');
   const headerGap = () => (header?.offsetHeight || 72) + 14;
 
+  // A bottom spacer keeps the page tall enough during a jump so that collapsing
+  // categories can't shrink the page below the scroll position and clamp it (the
+  // "everything flies to the top" jerk). Released — gliding — once the scroll settles,
+  // below the fold, so the footer eases up instead of snapping.
+  let spacer = null;
+  const reserveTo = (minHeight) => {
+    if (!spacer) {
+      spacer = document.createElement('div');
+      spacer.setAttribute('aria-hidden', 'true');
+      spacer.style.cssText = 'height:0;flex:none;pointer-events:none';
+      (document.querySelector('main') || document.body).appendChild(spacer);
+    }
+    const contentH = document.documentElement.scrollHeight - (parseFloat(spacer.style.height) || 0);
+    spacer.style.transition = 'none';
+    spacer.style.height = Math.max(0, minHeight - contentH) + 'px';
+  };
+  const releaseReserve = () => {
+    if (!spacer || parseFloat(spacer.style.height) === 0) return;
+    spacer.style.transition = 'height .42s cubic-bezier(.4, 0, .2, 1)';
+    spacer.style.height = '0px';
+  };
+
   // Gentle eased scroll (smoother than the browser's native "smooth", which flies).
   let scrollRAF = null;
   const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-  const smoothScrollTo = (targetY, duration) => {
+  const smoothScrollTo = (targetY, done) => {
     if (scrollRAF) cancelAnimationFrame(scrollRAF);
     const startY = window.scrollY;
     const dist = targetY - startY;
-    if (Math.abs(dist) < 2) return;
-    duration = duration || Math.min(720, Math.max(360, Math.abs(dist) * 0.6));
+    if (Math.abs(dist) < 2) { if (done) done(); return; }
+    const duration = Math.min(720, Math.max(360, Math.abs(dist) * 0.6));
     let startT = null;
     const step = (ts) => {
       if (startT === null) startT = ts;
       const p = Math.min(1, (ts - startT) / duration);
       window.scrollTo(0, startY + dist * easeInOutCubic(p));
       if (p < 1) scrollRAF = requestAnimationFrame(step);
+      else if (done) done();
     };
     scrollRAF = requestAnimationFrame(step);
   };
 
-  // Open a topic and glide its header to the top. Others close instantly so the layout
-  // above the target is stable (no jump), but the target opens ANIMATED (soft expand).
+  // Open a topic and glide its header to the top. Others close instantly (accurate
+  // target); the target opens ANIMATED (soft expand). The reserve stops the collapse
+  // from clamping the scroll, so the page glides instead of jumping.
   const jumpToCat = (category) => {
+    const oldHeight = document.documentElement.scrollHeight;
     catsPanel?.classList.add('is-instant');
     cats.forEach((c) => { if (c !== category) setCatOpen(c, false); });
     void (catsPanel && catsPanel.offsetHeight); // reflow with the others already closed
     catsPanel?.classList.remove('is-instant');
     setCatOpen(category, true); // soft animated expand
-    smoothScrollTo(category.getBoundingClientRect().top + window.scrollY - headerGap());
+    const targetY = category.getBoundingClientRect().top + window.scrollY - headerGap();
+    reserveTo(Math.max(oldHeight, targetY + window.innerHeight + 40));
+    smoothScrollTo(targetY, releaseReserve);
   };
 
   cats.forEach((category) => {
