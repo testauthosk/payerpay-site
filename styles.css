@@ -1694,7 +1694,7 @@ p { text-wrap: pretty; }
 .faq-page { padding: 42px 0 96px; background: linear-gradient(180deg, #faf7f4 0, #fff 100%); }
 
 /* Two-pane help-centre: sticky topic index + one grouped content panel */
-.faq-layout { display: grid; grid-template-columns: 244px minmax(0, 1fr); gap: 46px; align-items: start; max-width: none; margin: 0; }
+.faq-layout { display: grid; grid-template-columns: 342px minmax(0, 1fr); gap: 46px; align-items: start; max-width: none; margin: 0; }
 
 .faq-index { position: sticky; top: 92px; align-self: start; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: var(--shadow-sm); overflow: hidden; }
 .faq-index-head { padding: 18px 18px 10px; }
