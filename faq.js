@@ -35,53 +35,121 @@
   window.addEventListener('scroll', syncHeader, { passive: true });
   $$('[data-year]').forEach((node) => { node.textContent = String(new Date().getFullYear()); });
 
-  $$('[data-faq-cat]').forEach((category) => {
+  // ---- Category accordion (single-open: opening one closes the others) ----
+  const cats = $$('[data-faq-cat]');
+  const catBody = (category) => {
+    const btn = $('.faq-cat-head', category);
+    return btn?.getAttribute('aria-controls') ? document.getElementById(btn.getAttribute('aria-controls')) : null;
+  };
+  const setCatOpen = (category, open) => {
+    $('.faq-cat-head', category)?.setAttribute('aria-expanded', String(open));
+    category.classList.toggle('is-open', open);
+    catBody(category)?.setAttribute('aria-hidden', String(!open));
+  };
+  const openCatSolo = (category) => {
+    cats.forEach((c) => { if (c !== category) setCatOpen(c, false); });
+    setCatOpen(category, true);
+  };
+  const scrollToCat = (category) => {
+    const y = category.getBoundingClientRect().top + window.scrollY - 88;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  };
+
+  cats.forEach((category) => {
     const button = $('.faq-cat-head', category);
-    const body = button?.getAttribute('aria-controls') ? document.getElementById(button.getAttribute('aria-controls')) : null;
-    body?.setAttribute('aria-hidden', 'true');
+    catBody(category)?.setAttribute('aria-hidden', 'true');
     button?.addEventListener('click', () => {
-      const open = button.getAttribute('aria-expanded') !== 'true';
-      category.classList.toggle('is-open', open);
-      button.setAttribute('aria-expanded', String(open));
-      body?.setAttribute('aria-hidden', String(!open));
+      if (button.getAttribute('aria-expanded') === 'true') setCatOpen(category, false);
+      else openCatSolo(category);
     });
   });
 
-  $$('.faq-question').forEach((button) => {
-    const answer = button.getAttribute('aria-controls') ? document.getElementById(button.getAttribute('aria-controls')) : null;
-    answer?.setAttribute('aria-hidden', 'true');
-    button.addEventListener('click', () => {
-      const item = button.closest('.faq-item');
-      const open = button.getAttribute('aria-expanded') !== 'true';
-      item?.classList.toggle('is-open', open);
-      button.setAttribute('aria-expanded', String(open));
-      answer?.setAttribute('aria-hidden', String(!open));
+  // ---- Individual questions ----
+  const setItemOpen = (item, open) => {
+    const button = $('.faq-question', item);
+    const answer = button?.getAttribute('aria-controls') ? document.getElementById(button.getAttribute('aria-controls')) : null;
+    item.classList.toggle('is-open', open);
+    button?.setAttribute('aria-expanded', String(open));
+    answer?.setAttribute('aria-hidden', String(!open));
+  };
+  $$('.faq-item').forEach((item) => {
+    setItemOpen(item, false);
+    $('.faq-question', item)?.addEventListener('click', () => {
+      setItemOpen(item, !item.classList.contains('is-open'));
     });
   });
 
-  // Sticky topic index — built from the categories, with scroll-spy
+  // ---- Intelligent search across all questions + answers ----
+  let clearSearch = () => {};
+  const searchInput = $('[data-faq-search]');
+  const searchStatus = $('[data-faq-status]');
+  const catsWrap = $('.faq-page-cats');
+  const items = $$('.faq-item');
+  items.forEach((it) => { it._text = (it.textContent || '').toLowerCase().replace(/\s+/g, ' '); });
+
+  if (searchInput) {
+    let timer;
+    const runSearch = () => {
+      const raw = searchInput.value.trim();
+      const words = raw.toLowerCase().split(/\s+/).filter(Boolean);
+      catsWrap?.classList.toggle('is-searching', words.length > 0);
+
+      if (!words.length) {
+        cats.forEach((c) => { c.hidden = false; setCatOpen(c, false); });
+        items.forEach((it) => { it.hidden = false; setItemOpen(it, false); });
+        if (searchStatus) { searchStatus.hidden = true; searchStatus.textContent = ''; }
+        return;
+      }
+
+      let total = 0;
+      cats.forEach((category) => {
+        let hits = 0;
+        $$('.faq-item', category).forEach((it) => {
+          const match = words.every((w) => it._text.includes(w));
+          it.hidden = !match;
+          setItemOpen(it, match); // open matches so the answer shows
+          if (match) hits++;
+        });
+        category.hidden = hits === 0;
+        setCatOpen(category, hits > 0);
+        total += hits;
+      });
+
+      if (searchStatus) {
+        searchStatus.hidden = false;
+        searchStatus.textContent = total
+          ? `${total} result${total === 1 ? '' : 's'} for “${raw}”`
+          : `Nothing found for “${raw}” — try another word.`;
+      }
+    };
+    searchInput.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(runSearch, 110); });
+    searchInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') { searchInput.value = ''; runSearch(); searchInput.blur(); }
+    });
+    clearSearch = () => { if (searchInput.value) { searchInput.value = ''; runSearch(); } };
+  }
+
+  // ---- Sticky topic index — built from the categories, with scroll-spy ----
   const indexNav = $('[data-faq-index]');
   if (indexNav) {
-    const cats = $$('[data-faq-cat]');
     const links = [];
     const setActive = (link) => links.forEach((l) => l.classList.toggle('is-active', l === link));
-    cats.forEach((cat) => {
-      const title = ($('.faq-cat-title', cat)?.textContent || '').trim();
-      const num = (($('.faq-cat-count', cat)?.textContent || '').match(/\d+/) || [''])[0];
+    cats.forEach((category) => {
+      const title = ($('.faq-cat-title', category)?.textContent || '').trim();
+      const num = (($('.faq-cat-count', category)?.textContent || '').match(/\d+/) || [''])[0];
       const link = document.createElement('a');
       link.className = 'faq-index-link';
       link.href = '#';
       link.innerHTML = `<span>${title}</span><em>${num}</em>`;
       link.addEventListener('click', (event) => {
         event.preventDefault();
-        const head = $('.faq-cat-head', cat);
-        if (head && head.getAttribute('aria-expanded') !== 'true') head.click();
-        const y = cat.getBoundingClientRect().top + window.scrollY - 88;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        clearSearch();
+        openCatSolo(category);
+        scrollToCat(category);
         setActive(link);
       });
       indexNav.appendChild(link);
-      cat._indexLink = link;
+      category._indexLink = link;
       links.push(link);
     });
     if ('IntersectionObserver' in window) {
@@ -90,16 +158,32 @@
           if (entry.isIntersecting && entry.target._indexLink) setActive(entry.target._indexLink);
         });
       }, { rootMargin: '-38% 0px -55% 0px', threshold: 0 });
-      cats.forEach((cat) => spy.observe(cat));
+      cats.forEach((category) => spy.observe(category));
     }
   }
 
+  // ---- "First steps" cards jump into the matching category ----
+  $$('[data-faq-jump]').forEach((el) => {
+    const jump = () => {
+      const category = cats[parseInt(el.getAttribute('data-faq-jump'), 10) - 1];
+      if (!category) return;
+      clearSearch();
+      openCatSolo(category);
+      scrollToCat(category);
+    };
+    el.addEventListener('click', (event) => { event.preventDefault(); jump(); });
+    el.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); jump(); }
+    });
+  });
+
+  // ---- Deep-link support (#faq-cat-N / #faq-q-...) ----
   const hashTarget = window.location.hash ? document.querySelector(window.location.hash) : null;
   if (hashTarget) {
     const category = hashTarget.closest('[data-faq-cat]');
-    const categoryButton = category ? $('.faq-cat-head', category) : null;
-    category?.classList.add('is-open');
-    categoryButton?.setAttribute('aria-expanded', 'true');
-    if (hashTarget.classList.contains('faq-question')) hashTarget.click();
+    if (category) openCatSolo(category);
+    if (hashTarget.classList.contains('faq-question')) {
+      setItemOpen(hashTarget.closest('.faq-item'), true);
+    }
   }
 })();

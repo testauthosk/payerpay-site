@@ -1690,6 +1690,39 @@ p { text-wrap: pretty; }
 .faq-cat { scroll-margin-top: 92px; background: transparent; transition: background .35s ease; }
 .faq-cat + .faq-cat { border-top: 1px solid var(--line); }
 .faq-cat.is-open { background: #fffaf8; }
+.faq-cat[hidden], .faq-item[hidden] { display: none; }
+
+/* Content column + search */
+.faq-content { min-width: 0; }
+.faq-search { position: relative; margin-bottom: 12px; }
+.faq-search-icon { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); width: 19px; height: 19px; fill: none; stroke: #9aa2b1; stroke-width: 2; stroke-linecap: round; pointer-events: none; transition: stroke .2s ease; }
+.faq-search:focus-within .faq-search-icon { stroke: var(--coral); }
+.faq-search-input { width: 100%; padding: 15px 18px 15px 47px; border: 1px solid var(--line); border-radius: 15px; background: #fff; color: var(--navy); font-family: inherit; font-size: 15px; font-weight: 600; box-shadow: 0 8px 24px rgba(15, 27, 51, .05); transition: border-color .2s ease, box-shadow .2s ease; }
+.faq-search-input::placeholder { color: #9aa2b1; font-weight: 550; }
+.faq-search-input:focus { outline: 0; border-color: rgba(255, 101, 77, .5); box-shadow: 0 0 0 4px rgba(255, 101, 77, .12); }
+.faq-search-status { margin: 0 0 12px 4px; color: var(--muted); font-size: 13px; font-weight: 700; }
+
+/* During search: no open/close animation, results appear instantly */
+.faq-page-cats.is-searching .faq-cat-body,
+.faq-page-cats.is-searching .faq-item > .faq-answer,
+.faq-page-cats.is-searching .faq-answer-inner { transition: none; }
+
+/* First steps after registration */
+.faq-firststeps { padding: 8px 0 84px; background: linear-gradient(180deg, #fff 0, #faf7f4 100%); }
+.faq-firststeps .fs-head { max-width: 640px; margin: 0 auto 28px; text-align: center; }
+.faq-firststeps h2 { margin: 8px 0 12px; color: var(--navy); font-size: clamp(28px, 3.4vw, 40px); font-weight: 900; letter-spacing: -.03em; line-height: 1.08; }
+.faq-firststeps .fs-head p { color: var(--muted); font-size: 16px; line-height: 1.6; }
+.fs-list { max-width: 760px; margin: 0 auto; padding: 0; list-style: none; display: grid; gap: 12px; counter-reset: none; }
+.fs-step { display: flex; align-items: center; gap: 18px; padding: 17px 22px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 8px 22px rgba(15, 27, 51, .04); cursor: pointer; transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease; }
+.fs-step:hover { border-color: rgba(255, 101, 77, .35); box-shadow: 0 16px 34px rgba(15, 27, 51, .08); transform: translateY(-2px); }
+.fs-step:focus-visible { outline: 0; border-color: var(--coral); box-shadow: 0 0 0 3px rgba(255, 101, 77, .25); }
+.fs-num { flex: 0 0 auto; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--coral-soft); color: var(--coral); font-size: 16px; font-weight: 900; transition: background .22s ease, color .22s ease; }
+.fs-step:hover .fs-num { background: var(--coral); color: #fff; }
+.fs-body { flex: 1 1 auto; min-width: 0; }
+.fs-body h3 { margin: 0 0 3px; color: var(--navy); font-size: 16px; font-weight: 850; letter-spacing: -.01em; }
+.fs-body p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.fs-go { flex: 0 0 auto; color: #c2c8d2; font-size: 19px; transition: color .2s ease, transform .2s ease; }
+.fs-step:hover .fs-go { color: var(--coral); transform: translateX(3px); }
 .faq-cat-head { display: flex; align-items: center; justify-content: flex-start; gap: 13px; width: 100%; min-height: 62px; padding: 15px 22px; border: 0; background: transparent; color: var(--navy); cursor: pointer; font-family: inherit; text-align: left; }
 .faq-cat-head:hover .faq-cat-title { color: var(--coral); }
 .faq-cat-head:focus-visible { outline: 0; border-radius: 18px; box-shadow: inset 0 0 0 3px rgba(255, 101, 77, .3); }
@@ -1725,6 +1758,10 @@ p { text-wrap: pretty; }
   .faq-cat-count { font-size: 11px; }
   .faq-cat-meta { gap: 11px; }
   .faq-cat .faq-list { padding: 2px 9px 15px; }
+  .faq-search-input { font-size: 16px; }
+  .faq-firststeps { padding: 4px 0 60px; }
+  .fs-step { padding: 15px 16px; gap: 14px; }
+  .fs-num { width: 34px; height: 34px; font-size: 15px; }
 }
 
 /* ===== AUTH PAGES (login / register) ===== */
