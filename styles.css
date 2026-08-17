@@ -1,3 +1,14 @@
+/* Плавные переходы между страницами (без резкого белого перезагруза) */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) {
+  animation-duration: .34s;
+  animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+}
+.site-header { view-transition-name: site-header; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
+
 :root {
   --navy: #0f1b33;
   --coral: #ff654d;
