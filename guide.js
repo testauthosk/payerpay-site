@@ -188,6 +188,11 @@
   const img = document.createElement('img');
   img.alt = '';
   overlay.appendChild(img);
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'guide-lightbox-close';
+  closeBtn.setAttribute('aria-label', 'Close');
+  overlay.appendChild(closeBtn);
   document.body.appendChild(overlay);
   const close = () => { overlay.hidden = true; img.removeAttribute('src'); document.body.style.overflow = ''; };
   document.addEventListener('click', (e) => {
