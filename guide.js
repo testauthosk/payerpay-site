@@ -59,9 +59,11 @@
 
   // Gentle eased scroll (smoother than native "smooth").
   let scrollRAF = null;
+  let scrollSafety = null;
   const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   const smoothScrollTo = (targetY) => {
     if (scrollRAF) cancelAnimationFrame(scrollRAF);
+    if (scrollSafety) clearTimeout(scrollSafety);
     const startY = window.scrollY;
     const dist = targetY - startY;
     if (Math.abs(dist) < 2) return;
@@ -70,15 +72,26 @@
     const root = document.documentElement;
     root.style.scrollBehavior = 'auto';
     const duration = Math.min(720, Math.max(340, Math.abs(dist) * 0.6));
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      if (scrollRAF) cancelAnimationFrame(scrollRAF);
+      if (scrollSafety) clearTimeout(scrollSafety);
+      window.scrollTo(0, targetY);
+      root.style.scrollBehavior = '';
+    };
     let startT = null;
     const step = (ts) => {
+      if (finished) return;
       if (startT === null) startT = ts;
       const p = Math.min(1, (ts - startT) / duration);
       window.scrollTo(0, startY + dist * easeInOutCubic(p));
       if (p < 1) scrollRAF = requestAnimationFrame(step);
-      else root.style.scrollBehavior = '';
+      else finish();
     };
     scrollRAF = requestAnimationFrame(step);
+    scrollSafety = setTimeout(finish, duration + 300);
   };
 
   // Animate the content-area height between chapters so the footer glides, not snaps.

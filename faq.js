@@ -77,9 +77,11 @@
 
   // Gentle eased scroll (smoother than the browser's native "smooth", which flies).
   let scrollRAF = null;
+  let scrollSafety = null;
   const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   const smoothScrollTo = (targetY, done) => {
     if (scrollRAF) cancelAnimationFrame(scrollRAF);
+    if (scrollSafety) clearTimeout(scrollSafety);
     const startY = window.scrollY;
     const dist = targetY - startY;
     if (Math.abs(dist) < 2) { if (done) done(); return; }
@@ -89,15 +91,27 @@
     const root = document.documentElement;
     root.style.scrollBehavior = 'auto';
     const duration = Math.min(720, Math.max(360, Math.abs(dist) * 0.6));
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      if (scrollRAF) cancelAnimationFrame(scrollRAF);
+      if (scrollSafety) clearTimeout(scrollSafety);
+      window.scrollTo(0, targetY);
+      root.style.scrollBehavior = '';
+      if (done) done();
+    };
     let startT = null;
     const step = (ts) => {
+      if (finished) return;
       if (startT === null) startT = ts;
       const p = Math.min(1, (ts - startT) / duration);
       window.scrollTo(0, startY + dist * easeInOutCubic(p));
       if (p < 1) scrollRAF = requestAnimationFrame(step);
-      else { root.style.scrollBehavior = ''; if (done) done(); }
+      else finish();
     };
     scrollRAF = requestAnimationFrame(step);
+    scrollSafety = setTimeout(finish, duration + 300); // fallback if rAF is throttled (bg tab)
   };
 
   // Open a topic and glide its header to the top. Others close instantly (accurate
