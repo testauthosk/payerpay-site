@@ -194,6 +194,9 @@ def final_cta(h2, copy, note):
             f'<a class="button button-light" href="/register.html" data-register data-cta="primary" data-pos="final">Get account details <span aria-hidden="true">&rarr;</span></a>'
             f'<p class="lp-availability">{note}</p></div></div></div></section>')
 
+def hero_image(src, alt, w=1448, h=1086):
+    return f'<img src="{src}" class="lp-hero-img" alt="{alt}" width="{w}" height="{h}" fetchpriority="high" decoding="async">'
+
 def hero(d, visual):
     return (f'<section class="hero lp-hero" id="top"><div class="hero-orb hero-orb-one" aria-hidden="true"></div>'
             f'<div class="hero-orb hero-orb-two" aria-hidden="true"></div>'
@@ -267,7 +270,7 @@ USD = {
 
 def render_usd(d):
     b = FLAG_SPRITE
-    b += hero(d, usd_card())
+    b += hero(d, hero_image("/assets/hero-lp-usd.png?v=1", "Personal USD payment details funded by incoming payments from around the world"))
     b += '<section class="section section-soft"><div class="container">'
     b += section_head("Built for getting paid", "USD details built for getting paid abroad")
     b += benefits([

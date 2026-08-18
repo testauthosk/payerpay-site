@@ -8,6 +8,7 @@
 .lp-chips li { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; font-weight: 700; color: var(--navy); box-shadow: 0 6px 16px rgba(15,27,51,.05); }
 .lp-chips li span { color: var(--coral); font-weight: 900; }
 .lp-hero-visual { display: flex; align-items: center; justify-content: center; }
+.lp-hero-img { display: block; width: 100%; height: auto; -webkit-mask-image: radial-gradient(ellipse 98% 96% at 50% 50%, #000 74%, rgba(0,0,0,.55) 89%, transparent 100%); mask-image: radial-gradient(ellipse 98% 96% at 50% 50%, #000 74%, rgba(0,0,0,.55) 89%, transparent 100%); }
 
 /* UI cards */
 .lp-card { width: 100%; max-width: 420px; background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 24px 26px; box-shadow: 0 30px 70px rgba(15,27,51,.12); }
