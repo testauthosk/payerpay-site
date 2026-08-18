@@ -338,7 +338,8 @@ def render_usd(d):
 
 # ======================= COUNTRY PAGES (India / Philippines) =======================
 def render_country(d):
-    b = hero(d, flow(d["flowNodes"]))
+    visual = hero_image(d["heroImg"], d.get("heroAlt", "")) if d.get("heroImg") else flow(d["flowNodes"])
+    b = hero(d, visual)
     b += '<section class="section section-soft"><div class="container">'
     b += section_head("How it flows", d["benefitsH2"])
     b += benefits(d["benefits"])
@@ -378,6 +379,8 @@ INDIA = {
   "heroCopy": "Receive eligible payments in USD or EUR, convert to INR, and send funds directly to a recipient's bank account in India.",
   "trustChips": ["USD or EUR funding", "INR local bank transfer", "Rate &amp; fee shown before confirmation"],
   "flowNodes": [("USD / EUR", "You receive"), ("PayerPay balance", "Convert"), ("INR", "Local transfer"), ("Local bank account in India", "Recipient")],
+  "heroImg": "/assets/hero-lp-india.png?v=1",
+  "heroAlt": "US dollars and euros converted to Indian rupees and sent to a local bank account in India",
   "benefitsH2": "From your income abroad to a bank account in India",
   "benefits": [
     ("Get paid in USD or EUR", "Use personal USD or EUR payment details, subject to eligibility and verification."),
