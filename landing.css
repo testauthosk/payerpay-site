@@ -3,6 +3,8 @@
 .lp-body { background: #fff; }
 
 /* hero */
+.lp-hero { background: #fff; }
+.lp-hero .hero-orb { display: none; }
 .lp-hero .hero-lead { max-width: 600px; }
 .lp-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; }
 .lp-chips li { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; font-weight: 700; color: var(--navy); box-shadow: 0 6px 16px rgba(15,27,51,.05); }
