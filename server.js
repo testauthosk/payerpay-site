@@ -20,6 +20,15 @@ const sendHtml = (res, buf, url) => {
   res.end(body);
 };
 
+// Настоящий 404: отдаём 404.html со статусом 404 (не главную с 200) — правильно для SEO.
+const send404 = (res) => {
+  fs.readFile(path.join(root, '404.html'), (e, buf) => {
+    if (e) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('404 Not found'); }
+    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store, must-revalidate' });
+    res.end(versionAssets(buf.toString('utf8')));
+  });
+};
+
 http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
   if (p === '/' || p.endsWith('/')) p += 'index.html';
@@ -31,19 +40,11 @@ http.createServer((req, res) => {
       if (!path.extname(p)) {
         fs.readFile(path.join(f, 'index.html'), (e3, d3) => {
           if (!e3) return sendHtml(res, d3, req.url);
-          // иначе фолбэк на корневой index.html
-          fs.readFile(path.join(root, 'index.html'), (e2, d2) => {
-            if (e2) { res.writeHead(404); res.end('Not found'); }
-            else sendHtml(res, d2, req.url);
-          });
+          return send404(res); // нет такой страницы
         });
         return;
       }
-      // фолбэк на index.html
-      fs.readFile(path.join(root, 'index.html'), (e2, d2) => {
-        if (e2) { res.writeHead(404); res.end('Not found'); }
-        else sendHtml(res, d2, req.url);
-      });
+      return send404(res); // отсутствующий файл
       return;
     }
     const ext = path.extname(f).toLowerCase();
