@@ -146,6 +146,7 @@
 @media (max-width: 760px) {
   .lp-body .lp-hero { min-height: 0; padding: 14px 0 18px; }
   .lp-body .lp-hero .hero-grid { gap: 22px; }
+  .lp-body .lp-hero-visual { height: auto; aspect-ratio: auto; }
   .lp-body .section { padding-top: 30px; padding-bottom: 30px; }
   .lp-body .section-heading { margin-bottom: 16px; }
   .lp-mid-cta { margin-top: 20px; }
