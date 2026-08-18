@@ -114,17 +114,45 @@ def chips(items):
     lis = "".join(f"<li><span aria-hidden=\"true\">&#10003;</span> {c}</li>" for c in items)
     return f'<ul class="lp-chips" aria-label="Key benefits">{lis}</ul>'
 
+def _svg(inner): return f'<svg viewBox="0 0 24 24" aria-hidden="true">{inner}</svg>'
+ICONS = [
+    _svg('<path d="M12 3v11m0 0 4-4m-4 4-4-4M5 19h14"/>'),                         # receive
+    _svg('<rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2"/><path d="M5.8 16c.5-1.3 1.5-2 2.7-2s2.2.7 2.7 2M14 10.5h4M14 13.5h3"/>'),  # id / name
+    _svg('<path d="M4 4h6.6a2 2 0 0 1 1.4.6l7.4 7.4a2 2 0 0 1 0 2.8l-4.6 4.6a2 2 0 0 1-2.8 0L4.6 12A2 2 0 0 1 4 10.6V4Z"/><circle cx="8.6" cy="8.6" r="1.3"/>'),  # tag / fee
+    _svg('<path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5m-18 4 9 5 9-5"/>'),         # layers / manage
+    _svg('<path d="M7 7h11m0 0-3-3m3 3-3 3M17 17H6m0 0 3 3m-3-3 3-3"/>'),          # convert
+    _svg('<path d="m22 2-7 20-4-9-9-4 20-7Z"/>'),                                   # send
+    _svg('<path d="M4 10h16M5 10 12 4l7 6M6 10v8m12-8v8M4 21h16"/>'),              # bank
+    _svg('<circle cx="10" cy="8" r="3.2"/><path d="M4 20c.6-3 3-5 6-5s5.4 2 6 5"/><path d="m16 12 1.6 1.6L21 10"/>'),  # recipient
+]
+STEP_ICONS = [ICONS[0], ICONS[4], ICONS[1], ICONS[7], ICONS[5], ICONS[6]]
+
+def transparency_card():
+    rows = [("You send", "Amount you enter"), ("Fee", "Shown before you confirm"),
+            ("Exchange rate", "Locked at confirmation"), ("Amount debited", "From your balance"),
+            ("Recipient receives", "Final amount shown")]
+    r = "".join(f'<div><dt>{a}</dt><dd>{b}</dd></div>' for a, b in rows)
+    return ('<div class="lp-price-card" aria-hidden="true"><div class="lp-price-head">'
+            '<span aria-hidden="true">&#10003;</span> Before you confirm, you see:</div>'
+            f'<dl class="lp-price-rows">{r}</dl>'
+            '<div class="lp-price-foot">No surprises &mdash; review every detail first. Example labels only.</div></div>')
+
 def benefits(items):
     cards = ""
     for i, (h, p) in enumerate(items):
-        cards += f'<article data-reveal style="--delay: {i*70}ms"><span aria-hidden="true">{i+1:02d}</span><h3>{h}</h3><p>{p}</p></article>'
+        cards += (f'<article data-reveal style="--delay: {i*70}ms">'
+                  f'<span class="lp-b-ic" aria-hidden="true">{ICONS[i % len(ICONS)]}</span>'
+                  f'<span class="lp-b-num" aria-hidden="true">{i+1:02d}</span>'
+                  f'<h3>{h}</h3><p>{p}</p></article>')
     return f'<div class="lp-benefit-grid">{cards}</div>'
 
 def steps(items):
     lis = ""
     for i, (h, p) in enumerate(items):
-        lis += (f'<li class="lp-step" data-reveal style="--delay: {i*90}ms"><span class="lp-step-num">{i+1:02d}</span>'
-                f'<div><h3>{h}</h3><p>{p}</p></div></li>')
+        lis += (f'<li class="lp-step" data-reveal style="--delay: {i*90}ms">'
+                f'<div class="lp-step-top"><span class="lp-step-ic" aria-hidden="true">{STEP_ICONS[i % len(STEP_ICONS)]}</span>'
+                f'<span class="lp-step-num">{i+1:02d}</span></div>'
+                f'<h3>{h}</h3><p>{p}</p></li>')
     return f'<ol class="lp-steps">{lis}</ol>'
 
 def trust_cards(items):
@@ -278,10 +306,10 @@ def render_usd(d):
               ("Share your details with an eligible sender", "Once issued, use the details shown in your account to receive supported ACH or Fedwire payments."),
           ])
           + '<div class="lp-mid-cta">' + cta_primary("mid") + '</div></div></section>')
-    b += ('<section class="section"><div class="container lp-transparency">'
-          + section_head("Transparency", "Know the cost before you move money") +
-          '<p class="lp-lead">When you create a supported transfer, PayerPay shows the applicable fee, exchange rate, debit amount and recipient amount before you confirm.</p>'
-          '</div></section>')
+    b += ('<section class="section"><div class="container lp-two-col">'
+          '<div>' + section_head("Transparency", "Know the cost before you move money") +
+          '<p class="lp-para">When you create a supported transfer, PayerPay shows the applicable fee, exchange rate, debit amount and recipient amount before you confirm.</p></div>'
+          '<div class="lp-two-col-visual">' + transparency_card() + '</div></div></section>')
     b += ('<section class="section security-section lp-trust" id="security"><div class="security-orb" aria-hidden="true"></div>'
           '<div class="container">'
           + section_head("Trust and compliance", "Verification and security are part of the product")
@@ -319,10 +347,11 @@ def render_country(d):
     b += ('<section class="section"><div class="container lp-transparency">'
           + section_head("Recipient", d["recipientH2"]) +
           f'<p class="lp-lead">{d["recipientCopy"]}</p>' + cross_usd("Learn about USD payment details") + '</div></section>')
-    b += ('<section class="section section-soft"><div class="container lp-transparency">'
-          + section_head("Transparency", "See the price before you send") +
-          f'<p class="lp-lead">{d["transparencyCopy"]}</p>'
-          f'<p class="lp-note">{d["timeNote"]}</p></div></section>')
+    b += ('<section class="section section-soft"><div class="container lp-two-col">'
+          '<div>' + section_head("Transparency", "See the price before you send") +
+          f'<p class="lp-para">{d["transparencyCopy"]}</p>'
+          f'<p class="lp-note">{d["timeNote"]}</p></div>'
+          '<div class="lp-two-col-visual">' + transparency_card() + '</div></div></section>')
     b += ('<section class="section security-section lp-trust" id="security"><div class="security-orb" aria-hidden="true"></div>'
           '<div class="container">'
           + section_head("Trust and compliance", "Built for verified international payments")
