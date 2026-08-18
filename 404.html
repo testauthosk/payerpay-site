@@ -14,11 +14,11 @@
   <link rel="stylesheet" href="/landing.css?v=1">
   <style>
     .nf { min-height: 62vh; display: flex; align-items: center; }
-    .nf-inner { text-align: center; max-width: 620px; margin: 0 auto; padding: 40px 0; }
-    .nf-code { font-size: clamp(72px, 14vw, 150px); font-weight: 900; line-height: 1; letter-spacing: -.04em; color: var(--navy); }
-    .nf-code span { color: var(--coral); }
-    .nf-inner h1 { font-size: clamp(26px, 4vw, 38px); margin: 10px 0 12px; color: var(--navy); }
-    .nf-inner p { color: var(--muted); font-size: 17px; line-height: 1.6; margin: 0 auto 26px; max-width: 460px; }
+    .nf-inner { text-align: center; max-width: 640px; margin: 0 auto; padding: 30px 0; }
+    .nf-img { display: block; width: 100%; max-width: 540px; height: auto; margin: 0 auto 4px; -webkit-mask-image: radial-gradient(ellipse 96% 92% at 50% 48%, #000 70%, transparent 100%); mask-image: radial-gradient(ellipse 96% 92% at 50% 48%, #000 70%, transparent 100%); }
+    .nf-eyebrow { color: var(--coral); font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 6px; }
+    .nf-inner h1 { font-size: clamp(28px, 4.4vw, 42px); margin: 0 0 12px; color: var(--navy); letter-spacing: -.02em; }
+    .nf-inner p { color: var(--muted); font-size: 17px; line-height: 1.6; margin: 0 auto 26px; max-width: 480px; }
     .nf-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
   </style>
 </head>
@@ -47,9 +47,10 @@
     <section class="section nf">
       <div class="container">
         <div class="nf-inner">
-          <div class="nf-code" aria-hidden="true">4<span>0</span>4</div>
-          <h1>This page could not be found</h1>
-          <p>The link may be broken or the page may have moved. Let&rsquo;s get you back to receiving and sending money with clarity.</p>
+          <img class="nf-img" src="/assets/404-coin.png?v=1" alt="A courier coin skidding to a stop where the money route runs out" width="1448" height="1086" fetchpriority="high" decoding="async">
+          <p class="nf-eyebrow">Error 404</p>
+          <h1>This page took a wrong turn</h1>
+          <p>The page you are looking for could not be found &mdash; the link may be broken or it may have moved. Let&rsquo;s get you back on route.</p>
           <div class="nf-links">
             <a class="button button-primary" href="/">Back to home <span aria-hidden="true">&rarr;</span></a>
             <a class="button button-secondary" href="/faq.html">Visit the FAQ</a>
