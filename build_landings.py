@@ -282,7 +282,7 @@ def render_usd(d):
           + section_head("Transparency", "Know the cost before you move money") +
           '<p class="lp-lead">When you create a supported transfer, PayerPay shows the applicable fee, exchange rate, debit amount and recipient amount before you confirm.</p>'
           '</div></section>')
-    b += ('<section class="section security-section" id="security"><div class="security-orb" aria-hidden="true"></div>'
+    b += ('<section class="section security-section lp-trust" id="security"><div class="security-orb" aria-hidden="true"></div>'
           '<div class="container">'
           + section_head("Trust and compliance", "Verification and security are part of the product")
           + trust_cards([
@@ -323,7 +323,7 @@ def render_country(d):
           + section_head("Transparency", "See the price before you send") +
           f'<p class="lp-lead">{d["transparencyCopy"]}</p>'
           f'<p class="lp-note">{d["timeNote"]}</p></div></section>')
-    b += ('<section class="section security-section" id="security"><div class="security-orb" aria-hidden="true"></div>'
+    b += ('<section class="section security-section lp-trust" id="security"><div class="security-orb" aria-hidden="true"></div>'
           '<div class="container">'
           + section_head("Trust and compliance", "Built for verified international payments")
           + trust_cards(d["trustCards"]) + '</div></section>')

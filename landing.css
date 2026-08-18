@@ -92,6 +92,13 @@
 .lp-dest-card span { color: var(--muted); font-size: 14.5px; line-height: 1.5; }
 .lp-dest-card em { position: absolute; top: 22px; right: 24px; color: var(--coral); font-style: normal; font-weight: 900; }
 
+/* trust section: 3 cards in one balanced row (spec = exactly 3) */
+.lp-trust .container { position: relative; z-index: 2; }
+.lp-trust .section-heading { max-width: 720px; margin-bottom: 34px; }
+.lp-trust .security-cards { grid-template-columns: repeat(3, 1fr); }
+.lp-trust .security-cards article { min-height: 210px; }
+@media (max-width: 900px) { .lp-trust .security-cards { grid-template-columns: 1fr; } }
+
 /* final CTA availability note */
 .lp-final-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 .lp-availability { margin: 0; font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,.72); max-width: 460px; }
