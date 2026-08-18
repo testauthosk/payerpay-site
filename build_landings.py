@@ -429,6 +429,8 @@ PHIL = {
   "heroCopy": "Receive eligible payments in USD or EUR, convert to PHP, and send funds to a supported GCash wallet or local bank account in the Philippines.",
   "trustChips": ["USD or EUR funding", "GCash or local bank transfer", "Rate &amp; fee shown before confirmation"],
   "flowNodes": [("USD / EUR", "You receive"), ("PayerPay balance", "Convert"), ("PHP", "Local payout"), ("GCash / Local bank account", "Recipient")],
+  "heroImg": "/assets/hero-lp-philippines.png?v=1",
+  "heroAlt": "US dollars and euros converted to Philippine pesos and sent to a mobile wallet or a local bank card",
   "benefitsH2": "From your income abroad to the Philippines",
   "benefits": [
     ("Get paid in USD or EUR", "Use personal USD or EUR payment details, subject to eligibility and verification."),
