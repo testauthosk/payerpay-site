@@ -141,3 +141,18 @@
 @media (max-width: 520px) {
   .lp-benefit-grid, .lp-senders { grid-template-columns: 1fr; }
 }
+
+/* tighter vertical spacing on mobile (sections were too airy) */
+@media (max-width: 760px) {
+  .lp-body .lp-hero { min-height: 0; padding: 14px 0 18px; }
+  .lp-body .lp-hero .hero-grid { gap: 22px; }
+  .lp-body .section { padding-top: 30px; padding-bottom: 30px; }
+  .lp-body .section-heading { margin-bottom: 16px; }
+  .lp-mid-cta { margin-top: 20px; }
+  .lp-hero-visual { margin-top: 4px; }
+  .lp-chips { margin-top: 16px; }
+}
+@media (max-width: 520px) {
+  .lp-body .lp-hero { padding: 8px 0 12px; }
+  .lp-body .section { padding-top: 22px; padding-bottom: 22px; }
+}
