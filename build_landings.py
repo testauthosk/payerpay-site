@@ -270,7 +270,7 @@ USD = {
 
 def render_usd(d):
     b = FLAG_SPRITE
-    b += hero(d, hero_image("/assets/hero-lp-usd.png?v=2", "Personal USD payment details funded by incoming payments from around the world"))
+    b += hero(d, hero_image("/assets/hero-lp-usd.webp?v=1", "Personal USD payment details funded by incoming payments from around the world"))
     b += '<section class="section section-soft"><div class="container">'
     b += section_head("Built for getting paid", "USD details built for getting paid abroad")
     b += benefits([
@@ -379,7 +379,7 @@ INDIA = {
   "heroCopy": "Receive eligible payments in USD or EUR, convert to INR, and send funds directly to a recipient's bank account in India.",
   "trustChips": ["USD or EUR funding", "INR local bank transfer", "Rate &amp; fee shown before confirmation"],
   "flowNodes": [("USD / EUR", "You receive"), ("PayerPay balance", "Convert"), ("INR", "Local transfer"), ("Local bank account in India", "Recipient")],
-  "heroImg": "/assets/hero-lp-india.png?v=2",
+  "heroImg": "/assets/hero-lp-india.webp?v=1",
   "heroAlt": "US dollars and euros converted to Indian rupees and sent to a local bank account in India",
   "benefitsH2": "From your income abroad to a bank account in India",
   "benefits": [
@@ -429,7 +429,7 @@ PHIL = {
   "heroCopy": "Receive eligible payments in USD or EUR, convert to PHP, and send funds to a supported GCash wallet or local bank account in the Philippines.",
   "trustChips": ["USD or EUR funding", "GCash or local bank transfer", "Rate &amp; fee shown before confirmation"],
   "flowNodes": [("USD / EUR", "You receive"), ("PayerPay balance", "Convert"), ("PHP", "Local payout"), ("GCash / Local bank account", "Recipient")],
-  "heroImg": "/assets/hero-lp-philippines.png?v=2",
+  "heroImg": "/assets/hero-lp-philippines.webp?v=1",
   "heroAlt": "US dollars and euros converted to Philippine pesos and sent to a mobile wallet or a local bank card",
   "benefitsH2": "From your income abroad to the Philippines",
   "benefits": [
