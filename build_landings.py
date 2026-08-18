@@ -405,7 +405,7 @@ INDIA = {
   ],
   "faqs": [
     ("How can I send money to India with PayerPay?", "Receive funds in your PayerPay USD or EUR balance, choose India as the destination, enter the recipient's supported bank details, review the rate and fee, and confirm the transfer."),
-    ("Does PayerPay use UPI for transfers to India?", "No. PayerPay currently supports local bank transfers to eligible recipient bank accounts in India."),
+    ("Can I send INR directly to a bank account in India?", "Yes. PayerPay supports local bank transfers to eligible recipient bank accounts in India. The recipient receives INR in their bank account and does not need a PayerPay account."),
     ("Does the recipient need a PayerPay account?", "No. The recipient does not need to register with PayerPay for a supported local bank transfer."),
     ("What currency does the recipient receive?", "The recipient receives INR through the supported local bank-transfer route selected for the transaction."),
     ("Will I see the exchange rate and fee before sending?", "Yes. The applicable fee, exchange rate, debit amount and recipient amount are shown before confirmation."),
