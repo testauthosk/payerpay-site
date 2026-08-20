@@ -10,17 +10,17 @@ ORIGIN = "https://payerpay.io"
 # ---------- shared chrome (root-absolute paths; landings live in /slug/) ----------
 HEADER = '''  <header class="site-header" data-header>
     <div class="container nav-wrap">
-      <a class="logo" href="/" aria-label="PayerPay home"><img src="/assets/logo-full.png?v=1" alt="PayerPay" class="logo-img"></a>
+      <a class="logo" href="../index.html" aria-label="PayerPay home"><img src="../assets/logo-full.png?v=1" alt="PayerPay" class="logo-img"></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation" aria-label="Open menu" data-menu-toggle>
         <span></span><span></span><span></span>
       </button>
       <nav class="main-nav" id="main-navigation" aria-label="Main navigation" data-menu>
         <div class="main-nav-inner">
-          <a href="/#how-it-works">How it works</a>
-          <a href="/#destinations">Destinations</a>
-          <a href="/#security">Security</a>
-          <a href="/faq.html">FAQ</a>
-          <a class="button button-small button-primary nav-cta" href="/register.html" data-register>Get account details</a>
+          <a href="../index.html#how-it-works">How it works</a>
+          <a href="../index.html#destinations">Destinations</a>
+          <a href="../index.html#security">Security</a>
+          <a href="../faq.html">FAQ</a>
+          <a class="button button-small button-primary nav-cta" href="../register.html" data-register>Get account details</a>
         </div>
       </nav>
     </div>
@@ -30,21 +30,21 @@ HEADER = '''  <header class="site-header" data-header>
 FOOTER = '''  <footer class="site-footer">
     <div class="container footer-top">
       <div class="footer-brand">
-        <a class="logo logo-light" href="/" aria-label="PayerPay home"><img src="/assets/logo-full-light.png?v=1786990000" alt="PayerPay" class="logo-img"></a>
+        <a class="logo logo-light" href="../index.html" aria-label="PayerPay home"><img src="../assets/logo-full-light.png?v=1786990000" alt="PayerPay" class="logo-img"></a>
         <p class="footer-tagline">Get paid abroad and send money home locally &mdash; through payment methods your family already knows.</p>
         <div class="footer-actions">
           <a class="footer-tg" href="https://t.me/PayerPay" target="_blank" rel="noopener">
             <svg class="footer-tg-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.94 4.3 18.7 19.42c-.24 1.08-.89 1.34-1.8.83l-4.98-3.67-2.4 2.31c-.27.27-.49.49-1 .49l.36-5.06L18.1 6.1c.4-.36-.09-.56-.62-.2L6.3 13.06l-4.9-1.53c-1.06-.33-1.09-1.06.23-1.57l19.13-7.38c.89-.33 1.66.2 1.37 1.66Z"/></svg>
             Join us on Telegram
           </a>
-          <a class="footer-cta" href="/register.html" data-register>Get account details</a>
+          <a class="footer-cta" href="../register.html" data-register>Get account details</a>
         </div>
       </div>
       <nav class="footer-cols" aria-label="Footer navigation">
-        <div><h3>Product</h3><a href="/#how-it-works">How it works</a><a href="/#destinations">Destinations</a><a href="/#security">Security</a><a href="/faq.html">FAQ</a></div>
-        <div><h3>Solutions</h3><a href="/usd-account-non-us-residents">USD payment details</a><a href="/send-money-to-india">Send money to India</a><a href="/send-money-to-philippines">Send money to the Philippines</a></div>
-        <div><h3>Company</h3><a href="/#top">About</a><a href="/faq.html">Support</a><a href="/contact.html">Contact us</a></div>
-        <div><h3>Legal</h3><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/aml-kyc.html">AML / KYC</a></div>
+        <div><h3>Product</h3><a href="../index.html#how-it-works">How it works</a><a href="../index.html#destinations">Destinations</a><a href="../index.html#security">Security</a><a href="../faq.html">FAQ</a></div>
+        <div><h3>Solutions</h3><a href="../usd-account-non-us-residents">USD payment details</a><a href="../send-money-to-india">Send money to India</a><a href="../send-money-to-philippines">Send money to the Philippines</a></div>
+        <div><h3>Company</h3><a href="../index.html#top">About</a><a href="../faq.html">Support</a><a href="../contact.html">Contact us</a></div>
+        <div><h3>Legal</h3><a href="../terms.html">Terms</a><a href="../privacy.html">Privacy</a><a href="../aml-kyc.html">AML / KYC</a></div>
       </nav>
     </div>
     <div class="container footer-reg">
@@ -74,17 +74,17 @@ def shell(d, body):
   <link rel="canonical" href="{canonical}">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0f1b33">
-  <link rel="manifest" href="/site.webmanifest?v=1786988000">
-  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png?v=1786988000">
-  <link rel="icon" type="image/png" sizes="64x64" href="/assets/icons/favicon-64.png?v=1786988000">
+  <link rel="manifest" href="../site.webmanifest?v=1786988000">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png?v=1786988000">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/icons/favicon-64.png?v=1786988000">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{d["seo"]["ogTitle"]}">
   <meta property="og:description" content="{d["seo"]["ogDescription"]}">
   <meta property="og:url" content="{canonical}">
   <meta property="og:image" content="{ORIGIN}/assets/og-landing.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="/styles.css?v=1786988000">
-  <link rel="stylesheet" href="/landing.css?v=1">
+  <link rel="stylesheet" href="../styles.css?v=1786988000">
+  <link rel="stylesheet" href="../landing.css?v=1">
   <script type="application/ld+json">{json.dumps(schema)}</script>
   <script src="https://cdn.amplitude.com/script/67224fe472135bc9132d5dc9c7de0c4a.js"></script>
   <script>window.amplitude.init('67224fe472135bc9132d5dc9c7de0c4a');</script>
@@ -96,8 +96,8 @@ def shell(d, body):
 {body}
   </main>
 {FOOTER}
-  <script src="/app.js?v=1786988000" defer></script>
-  <script src="/landing.js?v=1" defer></script>
+  <script src="../app.js?v=1786988000" defer></script>
+  <script src="../landing.js?v=1" defer></script>
 </body>
 </html>
 '''
@@ -105,7 +105,7 @@ def shell(d, body):
 
 # ---------- block helpers ----------
 def cta_primary(pos, label="Get account details"):
-    return f'<a class="button button-primary" href="/register.html" data-register data-cta="primary" data-pos="{pos}">{label} <span aria-hidden="true">&rarr;</span></a>'
+    return f'<a class="button button-primary" href="../register.html" data-register data-cta="primary" data-pos="{pos}">{label} <span aria-hidden="true">&rarr;</span></a>'
 
 def cta_secondary(label="See how it works"):
     return f'<a class="button button-secondary" href="#how-it-works" data-cta="secondary"><span class="play-icon" aria-hidden="true">&#9654;</span> {label}</a>'
@@ -191,7 +191,7 @@ def final_cta(h2, copy, note):
     return (f'<section class="final-cta lp-final" id="start"><div class="final-orb" aria-hidden="true"></div>'
             f'<div class="container final-inner" data-reveal><div><p class="eyebrow light">Ready to start?</p>'
             f'<h2>{h2}</h2><p>{copy}</p><div class="lp-final-cta">'
-            f'<a class="button button-light" href="/register.html" data-register data-cta="primary" data-pos="final">Get account details <span aria-hidden="true">&rarr;</span></a>'
+            f'<a class="button button-light" href="../register.html" data-register data-cta="primary" data-pos="final">Get account details <span aria-hidden="true">&rarr;</span></a>'
             f'<p class="lp-availability">{note}</p></div></div></div></section>')
 
 def hero_image(src, alt, w=1448, h=1086):
@@ -242,14 +242,14 @@ def cross_dest():
     return ('<section class="section lp-popular"><div class="container">'
             + section_head("Popular destinations", "Send money where your family is", center=True) +
             '<div class="lp-dest-cards">'
-            '<a class="lp-dest-card" href="/send-money-to-india" data-crosslink="send-money-to-india"><strong>Send money to India</strong>'
+            '<a class="lp-dest-card" href="../send-money-to-india" data-crosslink="send-money-to-india"><strong>Send money to India</strong>'
             '<span>Receive USD or EUR and send INR via local bank transfer.</span><em aria-hidden="true">&rarr;</em></a>'
-            '<a class="lp-dest-card" href="/send-money-to-philippines" data-crosslink="send-money-to-philippines"><strong>Send money to the Philippines</strong>'
+            '<a class="lp-dest-card" href="../send-money-to-philippines" data-crosslink="send-money-to-philippines"><strong>Send money to the Philippines</strong>'
             '<span>Receive USD or EUR and send PHP to GCash or a local bank.</span><em aria-hidden="true">&rarr;</em></a>'
             '</div></div></section>')
 
 def cross_usd(text):
-    return ('<div class="lp-crosslink"><a href="/usd-account-non-us-residents" data-crosslink="usd-account-non-us-residents">'
+    return ('<div class="lp-crosslink"><a href="../usd-account-non-us-residents" data-crosslink="usd-account-non-us-residents">'
             + text + ' <span aria-hidden="true">&rarr;</span></a></div>')
 
 
@@ -270,7 +270,7 @@ USD = {
 
 def render_usd(d):
     b = FLAG_SPRITE
-    b += hero(d, hero_image("/assets/hero-lp-usd.webp?v=1", "Personal USD payment details funded by incoming payments from around the world"))
+    b += hero(d, hero_image("../assets/hero-lp-usd.webp?v=1", "Personal USD payment details funded by incoming payments from around the world"))
     b += '<section class="section section-soft"><div class="container">'
     b += section_head("Built for getting paid", "USD details built for getting paid abroad")
     b += benefits([
@@ -379,7 +379,7 @@ INDIA = {
   "heroCopy": "Receive eligible payments in USD or EUR, convert to INR, and send funds directly to a recipient's bank account in India.",
   "trustChips": ["USD or EUR funding", "INR local bank transfer", "Rate &amp; fee shown before confirmation"],
   "flowNodes": [("USD / EUR", "You receive"), ("PayerPay balance", "Convert"), ("INR", "Local transfer"), ("Local bank account in India", "Recipient")],
-  "heroImg": "/assets/hero-lp-india.webp?v=1",
+  "heroImg": "../assets/hero-lp-india.webp?v=1",
   "heroAlt": "US dollars and euros converted to Indian rupees and sent to a local bank account in India",
   "benefitsH2": "From your income abroad to a bank account in India",
   "benefits": [
@@ -429,7 +429,7 @@ PHIL = {
   "heroCopy": "Receive eligible payments in USD or EUR, convert to PHP, and send funds to a supported GCash wallet or local bank account in the Philippines.",
   "trustChips": ["USD or EUR funding", "GCash or local bank transfer", "Rate &amp; fee shown before confirmation"],
   "flowNodes": [("USD / EUR", "You receive"), ("PayerPay balance", "Convert"), ("PHP", "Local payout"), ("GCash / Local bank account", "Recipient")],
-  "heroImg": "/assets/hero-lp-philippines.webp?v=1",
+  "heroImg": "../assets/hero-lp-philippines.webp?v=1",
   "heroAlt": "US dollars and euros converted to Philippine pesos and sent to a supported GCash wallet or local bank account.",
   "benefitsH2": "From your income abroad to the Philippines",
   "benefits": [
