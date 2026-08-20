@@ -218,11 +218,23 @@
     });
   });
 
-  $$('.faq-question').forEach((button) => {
+  const faqButtons = $$('.faq-question');
+  faqButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const item = button.closest('.faq-item');
       const answer = button.getAttribute('aria-controls') ? document.getElementById(button.getAttribute('aria-controls')) : null;
       const open = button.getAttribute('aria-expanded') !== 'true';
+      // one-open-at-a-time: открывая один — закрываем остальные, чтобы не растягивало страницу
+      if (open) {
+        faqButtons.forEach((other) => {
+          if (other === button || other.getAttribute('aria-expanded') !== 'true') return;
+          const oItem = other.closest('.faq-item');
+          const oAns = other.getAttribute('aria-controls') ? document.getElementById(other.getAttribute('aria-controls')) : null;
+          oItem?.classList.remove('is-open');
+          other.setAttribute('aria-expanded', 'false');
+          oAns?.setAttribute('aria-hidden', 'true');
+        });
+      }
       item?.classList.toggle('is-open', open);
       button.setAttribute('aria-expanded', String(open));
       answer?.setAttribute('aria-hidden', String(!open));
