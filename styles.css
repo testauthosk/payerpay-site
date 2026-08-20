@@ -1817,7 +1817,7 @@ p { text-wrap: pretty; }
 .auth-top-link a { color: var(--coral); font-weight: 850; text-decoration: none; }
 .auth-top-link a:hover { text-decoration: underline; }
 
-.auth-back { display: inline-flex; align-items: center; align-self: flex-start; gap: 7px; margin-bottom: 20px; color: var(--muted); font-size: 13.5px; font-weight: 700; text-decoration: none; transition: color .2s ease; }
+.auth-back { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13.5px; font-weight: 700; white-space: nowrap; text-decoration: none; transition: color .2s ease; }
 .auth-back svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; }
 .auth-back:hover { color: var(--coral); }
 
